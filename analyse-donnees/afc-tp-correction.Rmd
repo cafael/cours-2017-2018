@@ -1,0 +1,115 @@
+---
+title: "TP AFC - *correction*"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.width = 12, fig.height = 12)
+library(readxl)
+library(FactoMineR)
+library(tibble)
+library(magrittr)
+library(ggplot2)
+```
+
+## Les données
+
+Nous travaillons sur la répartition de la population active, de 25 à 54 ans, selon la catégorie socioprofessionnelle et la position vis à vis de l’emploi, par commune et département (de 1968 à 2014 - voir  [source](https://www.insee.fr/fr/statistiques/1893185)).
+
+```{r, include=FALSE}
+d1968 = read_excel("pop-act2554-csp-cd-6814.xls", sheet = 4, skip = 14, col_names = FALSE)
+n1968 = c(read_excel("pop-act2554-csp-cd-6814.xls", sheet = 4, skip = 12, col_names = FALSE)[1,])
+t1968 = data.frame(d1968[1:96, 4:15])
+
+rownames(t1968) = unlist(d1968[1:96,3])
+colnames(t1968) = n1968[4:15]
+```
+
+```{r, include=FALSE}
+d2014 = read_excel("pop-act2554-csp-cd-6814.xls", sheet = 10, skip = 14, col_names = FALSE)
+n2014 = c(read_excel("pop-act2554-csp-cd-6814.xls", sheet = 10, skip = 12, col_names = FALSE)[1,])
+t2014 = data.frame(d2014[, 4:15])
+
+rownames(t2014) = unlist(d2014[,3])
+colnames(t2014) = n2014[4:15]
+```
+
+### Evolution des départements
+
+```{r}
+tab = rbind(
+  data.frame(annee = 1968, pop = apply(t1968, 1, sum)) %>% rownames_to_column("dep"),
+  data.frame(annee = 2014, pop = apply(t2014, 1, sum)) %>% rownames_to_column("dep")
+)
+ggplot(tab, aes(factor(annee), pop, fill = factor(annee))) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ dep, scale = "free_y") +
+  theme_void() +
+  theme(axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        strip.text = element_text(size = 8))
+```
+
+
+### Evolution des catégories socioprofessionnelles
+
+```{r}
+tab = rbind(
+  data.frame(annee = 1968, pop = apply(t1968, 2, sum)) %>% rownames_to_column("csp"),
+  data.frame(annee = 2014, pop = apply(t2014, 2, sum)) %>% rownames_to_column("csp")
+)
+tab$csp = sub("\nRP2014", "", sub("\nRP1968", "", tab$csp))
+ggplot(tab, aes(csp, pop, fill = factor(annee))) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  theme_minimal() +
+  theme(axis.title = element_blank())
+```
+
+
+## Lien entre départements et csp
+
+
+```{r}
+afc1968 = CA(t1968[,-c(2,4)])
+```
+
+```{r}
+afc2014 = CA(t2014, row.sup = 97:100, col.sup = c(2, 4))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+library(geojsonio)
+library(leaflet)
+
+france = geojson_read("departements.geojson", what = "sp")
+
+france@data = transform(france@data, val = runif(96))
+
+pal <- colorBin("Greens", domain = 0:1)
+
+leaflet(france) %>%
+  addTiles() %>%
+  addPolygons(fillColor = ~pal(val), fillOpacity = .5, color = "black")
+
+
+
