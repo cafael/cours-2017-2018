@@ -17,6 +17,5 @@ subtitle: DUT STID 2ème Année en alternance
     - [TD](afc-td.html)
         - Correction TD: [HTML](afc-td-correction.html) et [Rmd](afc-td-correction.Rmd)
     - [TP](afc-tp.html)
-
-
-
+- ACP ou AFC ? (sous SAS)
+    - [TD](acp-afc-td)
