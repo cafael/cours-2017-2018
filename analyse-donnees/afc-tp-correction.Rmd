@@ -7,8 +7,8 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE, fig.width = 12, fig.height = 12)
 library(readxl)
 library(FactoMineR)
+library(dplyr)
 library(tibble)
-library(magrittr)
 library(ggplot2)
 ```
 
@@ -22,7 +22,7 @@ n1968 = c(read_excel("pop-act2554-csp-cd-6814.xls", sheet = 4, skip = 12, col_na
 t1968 = data.frame(d1968[1:96, 4:15])
 
 rownames(t1968) = unlist(d1968[1:96,3])
-colnames(t1968) = n1968[4:15]
+colnames(t1968) = sub("\nRP1968", "", n1968[4:15])
 ```
 
 ```{r, include=FALSE}
@@ -31,10 +31,12 @@ n2014 = c(read_excel("pop-act2554-csp-cd-6814.xls", sheet = 10, skip = 12, col_n
 t2014 = data.frame(d2014[, 4:15])
 
 rownames(t2014) = unlist(d2014[,3])
-colnames(t2014) = n2014[4:15]
+colnames(t2014) = sub("\nRP2014", "", n2014[4:15])
 ```
 
 ### Evolution des départements
+
+Nous remarquons bien évidemment que la population a augmenté entre les deux années, mais de manière différente selon les départements. Il faut noter que nous n'avons pas les chiffres pour les DOM-TOM pour 1968.
 
 ```{r}
 tab = rbind(
@@ -44,6 +46,7 @@ tab = rbind(
 ggplot(tab, aes(factor(annee), pop, fill = factor(annee))) +
   geom_bar(stat = "identity") +
   facet_wrap(~ dep, scale = "free_y") +
+  labs(fill = "Année") +
   theme_void() +
   theme(axis.title = element_blank(),
         axis.text = element_blank(),
@@ -54,6 +57,8 @@ ggplot(tab, aes(factor(annee), pop, fill = factor(annee))) +
 
 ### Evolution des catégories socioprofessionnelles
 
+Dans le graphique ci-dessous, on voit clairement que le nombre de chômeurs a clairement augmenté entre les deux années. mais aussi qu'il y a moins d'ouvriers et d'agriculteurs en 2014 qu'en 1968.
+
 ```{r}
 tab = rbind(
   data.frame(annee = 1968, pop = apply(t1968, 2, sum)) %>% rownames_to_column("csp"),
@@ -63,53 +68,110 @@ tab$csp = sub("\nRP2014", "", sub("\nRP1968", "", tab$csp))
 ggplot(tab, aes(csp, pop, fill = factor(annee))) +
   geom_bar(stat = "identity") +
   coord_flip() +
+  facet_wrap(~ factor(annee)) +
   theme_minimal() +
-  theme(axis.title = element_blank())
+  theme(axis.title = element_blank()) +
+  labs(fill = "Année")
 ```
 
 
 ## Lien entre départements et csp
 
+### 1968
+
+Les faibles effectifs de certains catégories de chômeurs peuvent fausser l'analyse et il est intéressant de les indiquer comme modalités illustratives (*i.e*. supplémentaires).
 
 ```{r}
-afc1968 = CA(t1968[,-c(2,4)])
+afc1968 = CA(t1968, col.sup = seq(2, 12, by = 2), graph = FALSE)
 ```
+
+Pour 1968, on voit très bien que 2 axes suffisent à expliquer presque la totalité de l'information (`r round(afc1968$eig[2,3])`%).
 
 ```{r}
-afc2014 = CA(t2014, row.sup = 97:100, col.sup = c(2, 4))
+DT::datatable(round(afc1968$eig, 1))
 ```
 
+Le premier axe factoriel semble opposé les agriculteurs d'un côté, et les professions dites *supérieures* (cadres, employés et intermédiaires). Avec un effet marqué donc sur les chômeurs, ce qui justifie notre choix de les mettre en modalités illustratives.
 
+Le second axe factoriel, très marqué les modalités *chômeurs*, semble lui opposé la catégorie à faible revenu (ouvriers) aux catégories mieux payés (cadres et agriculteurs, à l'époque).
 
+```{r}
+df.col = rbind(
+  data.frame(afc1968$col$coord[,1:2], type = "col", stringsAsFactors = F),
+  data.frame(afc1968$col.sup$coord[,1:2], type = "sup", stringsAsFactors = F)
+) %>%
+  rownames_to_column("csp")
 
+ggplot(na.omit(df.col), aes(Dim.1, Dim.2, label = csp, col = type, alpha = type)) +
+  geom_text() +
+  scale_color_manual(values = c("red", "darkred")) +
+  scale_alpha_manual(values = c(1, .3)) +
+  theme_classic() +
+  xlim(-1.75, 1.25)
+```
 
+Concernant les départements, même si le graphique mériterait d'être allégé, il est possible de voir une opposition entre des départements ruraux (Creuse, Mayenne, Gers, ...) et des départements plus urbains (Paris, Hauts-de-Seine, ...) sur le premier axe.
 
+Sur le second axe, on retrouve l'opposition entre départements plutôt ouvriers (Moselle et Pas de Calais) et les départements avec beaucoup de cadres ou d'agriculteurs (Paris, Hauts-de-Seine, Gers, Creuse, Mayenne, Lot).
 
+```{r}
+df.row = data.frame(afc1968$row$coord[,1:2], type = "col", stringsAsFactors = F) %>%
+  rownames_to_column("dep")
 
+ggplot(na.omit(df.row), aes(Dim.1, Dim.2, label = dep)) +
+  geom_text(col = "blue") +
+  theme_classic() 
+```
 
+### 2014
 
+Nous faisons le même choix pour les modalités concernant les chômeurs pour cette année 2014. De plus, nous plaçons les DOM-TOM aussi en modalités illustratives pour rendre cohérente la comparaison entre les deux années.
 
+```{r}
+afc2014 = CA(t2014, row.sup = 97:100, col.sup = seq(2, 12, by = 2), graph = FALSE)
+```
 
+Pour 2014 aussi, on voit très bien que 2 axes suffisent à expliquer presque la totalité de l'information (`r round(afc2014$eig[2,3])`%). 
 
+```{r}
+DT::datatable(round(afc2014$eig, 1))
+```
 
+Le premier axe factoriel semble ici aussi opposé les agriculteurs d'un côté, et les cadres de l'autre. Avec un effet moins marqué donc sur les chômeurs.
 
+Le second axe factoriel est lui très marqué par la caétgorie agriculteurs.
 
+```{r}
+df.col = rbind(
+  data.frame(afc2014$col$coord[,1:2], type = "col", stringsAsFactors = F),
+  data.frame(afc2014$col.sup$coord[,1:2], type = "sup", stringsAsFactors = F)
+) %>%
+  rownames_to_column("csp")
 
+ggplot(na.omit(df.col), aes(Dim.1, Dim.2, label = csp, col = type, alpha = type)) +
+  geom_text() +
+  scale_color_manual(values = c("red", "darkred")) +
+  scale_alpha_manual(values = c(1, .3)) +
+  theme_classic() +
+  xlim(-.9, .7)
+```
 
+Concernant les départements, on retrouve l'opposition entre des départements très ruraux (Cantal, Lozère, Creuse, ...) et des départements très urbains (Paris, Hauts-de-Seine, ...) sur le premier axe.
 
+Sur le second axe, on retrouve ces départements très marqués par l'agriculture (Cantal, Lozère et Creuse entres autres).
 
-library(geojsonio)
-library(leaflet)
+```{r}
+df.row = rbind(
+  data.frame(afc2014$row$coord[,1:2], type = "row", stringsAsFactors = F),
+  data.frame(afc2014$row.sup$coord[,1:2], type = "sup", stringsAsFactors = F)
+) %>%
+  rownames_to_column("dep")
 
-france = geojson_read("departements.geojson", what = "sp")
-
-france@data = transform(france@data, val = runif(96))
-
-pal <- colorBin("Greens", domain = 0:1)
-
-leaflet(france) %>%
-  addTiles() %>%
-  addPolygons(fillColor = ~pal(val), fillOpacity = .5, color = "black")
-
+ggplot(na.omit(df.row), aes(Dim.1, Dim.2, label = dep, col = type, alpha = type)) +
+  geom_text() +
+  scale_color_manual(values = c("blue", "darkblue")) +
+  scale_alpha_manual(values = c(1, .3)) +
+  theme_classic() 
+```
 
 
