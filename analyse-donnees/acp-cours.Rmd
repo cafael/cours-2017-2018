@@ -5,6 +5,8 @@ author: FX Jollois
 output: 
     slidy_presentation:
         footer: "ACP - STID2A2"
+        css: ../css/slidy-fxj.css
+        self_contained: false
 ---
 
 ```{r, include=FALSE}

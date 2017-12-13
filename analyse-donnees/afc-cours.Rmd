@@ -5,7 +5,7 @@ author: FX Jollois
 output: 
     slidy_presentation:
         footer: "AFC - STID2A2"
-        css: slidy-fxj.css
+        css: ../css/slidy-fxj.css
         self_contained: false
 ---
 

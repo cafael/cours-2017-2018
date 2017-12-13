@@ -49,6 +49,20 @@ strong {
   margin: 0 auto;
 }
 
+.left50 {
+  float: left;
+  width: 50%;
+}
+
+.right50 {
+  float: right;
+  width: 50%;
+}
+
+.small {
+  font-size: .9em;
+}
+
 /*
 
 slide img {

@@ -19,3 +19,8 @@ subtitle: DUT STID 2ème Année en alternance
     - [TP](afc-tp.html)
 - ACP ou AFC ? (sous SAS)
     - [TD](acp-afc-td)
+- Analyse Factorielle des Correspondances Multiples (ou **ACM**)
+    - [Cours](acm-cours.html)
+    - [TD](acm-td.html)
+    - [TP]()
+
