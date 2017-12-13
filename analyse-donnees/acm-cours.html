@@ -1230,6 +1230,44 @@ c4
 </tbody>
 </table>
 </div>
+<div id="principe" class="slide section level1">
+<h1>Principe</h1>
+<p>Utiliser le tableau disjonctif complet comme une table de contingence particulière</p>
+<ul>
+<li>Totaux en ligne, identiques et égaux au nombre de variables</li>
+<li>Totaux en colonne, correspondant au nombre d’individus ayant chaque modalité</li>
+<li>Réalisation de l’ACP avec la métrique du <span class="math inline">\(\chi^2\)</span> comme pour l’AFC</li>
+</ul>
+<p>Utiliser le tableau de Burt</p>
+<ul>
+<li>Réalisation de l’AFC directement sur ce tableau</li>
+</ul>
+<p>Dans tous les cas</p>
+<blockquote>
+<p><strong>Interprétation longue et délicate</strong></p>
+</blockquote>
+</div>
+<div id="informations" class="slide section level1">
+<h1>Informations</h1>
+<ul>
+<li>Nombre de valeurs propres = <span class="math inline">\(m - p\)</span>
+<ul>
+<li><span class="math inline">\(m\)</span> : nombre de modalités</li>
+<li><span class="math inline">\(p\)</span> : nombre de variables</li>
+</ul></li>
+<li>Somme des valeurs propres = <span class="math inline">\((m - p) / p\)</span></li>
+<li>Caractéristique de l’ACM :
+<ul>
+<li>faible part de variance expliquée sur les premiers axes</li>
+</ul></li>
+<li>Choix du nombre de valeurs propres :
+<ul>
+<li>au moins 5</li>
+<li>généralement la moitié des axes</li>
+<li>recherche d’un palier important de la part de variance expliquée</li>
+</ul></li>
+</ul>
+</div>
 <div id="modalites-rares" class="slide section level1">
 <h1>Modalités rares</h1>
 <p>Modalités avec un effectif faible : <span class="math inline">\(&lt; 2\%\)</span> (par exemple)</p>
@@ -1248,27 +1286,6 @@ c4
 <ul>
 <li>ventilation aléatoire des effectifs dans les autres modalités</li>
 </ul></li>
-</ul></li>
-</ul>
-</div>
-<div id="calcul" class="slide section level1">
-<h1>Calcul</h1>
-<ul>
-<li>Nombre de valeurs propres = <span class="math inline">\(m - p\)</span>
-<ul>
-<li><span class="math inline">\(m\)</span> : nombre de modalités</li>
-<li><span class="math inline">\(p\)</span> : nombre de variables</li>
-</ul></li>
-<li>Somme des valeurs propres = <span class="math inline">\((m - p) / p\)</span></li>
-<li>Caractéristique de l’ACM :
-<ul>
-<li>faible part de variance expliquée sur les premiers axes</li>
-</ul></li>
-<li>Choix du nombre de valeurs propres :
-<ul>
-<li>au moins 5</li>
-<li>généralement la moitié des axes</li>
-<li>recherche d’un palier important de la part de variance expliquée</li>
 </ul></li>
 </ul>
 </div>
@@ -5589,7 +5606,7 @@ Dim.5
 <h1>Avec modalité rare</h1>
 <p>2 possibilités :</p>
 <ul>
-<li>on fixe les modalités à exclure (apr exemple <code>Fish == n</code>)</li>
+<li>on fixe les modalités à exclure (par exemple <code>Fish == n</code>)</li>
 <li>on fixe un seuil de ventilation (par exemple 2%)</li>
 </ul>
 <p>Dans notre cas, nous avons une modalité rare pour une variable à 2 modalités. L’exclure n’est pas utile, il est préférable de placer la variable <code>Fish</code> en illustrative.</p>

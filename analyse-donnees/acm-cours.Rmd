@@ -87,6 +87,34 @@ burt2 %>%
   add_header_above(c(" " = 2, "a" = 3, "b" = 2, "c" = 4)) 
 ```
 
+# Principe
+
+Utiliser le tableau disjonctif complet comme une table de contingence particulière
+
+- Totaux en ligne, identiques et égaux au nombre de variables
+- Totaux en colonne, correspondant au nombre d'individus ayant chaque modalité
+- Réalisation de l'ACP avec la métrique du $\chi^2$ comme pour l'AFC
+
+Utiliser le tableau de Burt
+
+- Réalisation de l'AFC directement sur ce tableau
+
+Dans tous les cas
+
+> **Interprétation longue et délicate**
+
+# Informations
+
+- Nombre de valeurs propres = $m - p$
+    - $m$ : nombre de modalités
+    - $p$ : nombre de variables
+- Somme des valeurs propres = $(m - p) / p$
+- Caractéristique de l'ACM :
+    - faible part de variance expliquée sur les premiers axes
+- Choix du nombre de valeurs propres :
+    - au moins 5
+    - généralement la moitié des axes
+    - recherche d'un palier important de la part de variance expliquée
 
 # Modalités rares
 
@@ -101,19 +129,6 @@ Modalités avec un effectif faible : $< 2\%$ (par exemple)
     - les exclure du calcul
     - dans certains outils, on parle d'*apurement*
         - ventilation aléatoire des effectifs dans les autres modalités
-
-# Calcul
-
-- Nombre de valeurs propres = $m - p$
-    - $m$ : nombre de modalités
-    - $p$ : nombre de variables
-- Somme des valeurs propres = $(m - p) / p$
-- Caractéristique de l'ACM :
-    - faible part de variance expliquée sur les premiers axes
-- Choix du nombre de valeurs propres :
-    - au moins 5
-    - généralement la moitié des axes
-    - recherche d'un palier important de la part de variance expliquée
 
 # Interprétation
 
@@ -187,7 +202,7 @@ par(mar = c(2, 2, 1, 1) + .5)
 b = barplot(acm$eig[, 2], 
         names.arg = 1:nrow(acm$eig), 
         col ="darkslategray")
-lines(b[-1], acm$eig[-11,2] - acm$eig[-1,2], 
+lines(b[-11], acm$eig[-11,2] - acm$eig[-1,2], 
       type = "b", pch = 19, col = "red")
 legend("topright", col = "red", lty = 1, legend = "Saut", bty = "n", pch = 19)
 ```
@@ -227,7 +242,7 @@ plot(acm, choix = "var", invisible = c("quali.sup", "quanti.sup"))
 
 Ce qui implique 20 graphiques...
 
-```{r}
+```{r, fig.height=7}
 par(mfrow = c(5, 4), mar = c(2, 2, 1, 0) + .1)
 for (i in 1:4) {
   for (j in 2:5) {
@@ -274,7 +289,7 @@ plot(acm, invisible = c("ind", "var"), autoLab = "yes")
 
 2 possibilités :
 
-- on fixe les modalités à exclure (apr exemple `Fish == n`)
+- on fixe les modalités à exclure (par exemple `Fish == n`)
 - on fixe un seuil de ventilation (par exemple 2%)
 
 Dans notre cas, nous avons une modalité rare pour une variable à 2 modalités. L'exclure n'est pas utile, il est préférable de placer la variable `Fish` en illustrative.
@@ -296,14 +311,14 @@ par(mar = c(2, 2, 1, 1) + .5)
 b = barplot(acm2$eig[, 2], 
         names.arg = 1:nrow(acm2$eig), 
         col ="darkslategray")
-lines(b[-1], acm2$eig[-10,2] - acm2$eig[-1,2], 
+lines(b[-10], acm2$eig[-10,2] - acm2$eig[-1,2], 
       type = "b", pch = 19, col = "red")
 legend("topright", col = "red", lty = 1, legend = "Saut", bty = "n", pch = 19)
 ```
 
 # Les 5 premiers axes
 
-```{r}
+```{r, fig.height=7}
 par(mfrow = c(5, 4), mar = c(2, 2, 1, 0) + .1)
 for (i in 1:4) {
   for (j in 2:5) {
