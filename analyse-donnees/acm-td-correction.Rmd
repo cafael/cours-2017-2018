@@ -1,0 +1,109 @@
+---
+title: ACM - TD - *correction*
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(comment = NA, fig.align = "center", echo = FALSE)
+
+library(tidyverse)
+```
+
+## Données `poison`
+
+Nous allons utiliser le jeu de données [`poison`](https://rdrr.io/cran/FactoMineR/man/poison.html). Celui-ci concerne une étude sur une intoxication alimentaire d'enfants dans une école.
+
+```{r data}
+library(FactoMineR)
+data(poison)
+
+DT::datatable(poison)
+```
+
+Nous allons réaliser une ACM sur ces données, avec les quatre premières variables en tant qu'illustratives. Cela nous permettra donc de situer les symptômes et aliments consommés au regard des informations de ces variables (âge, sexe, intoxication). Et nous choississons aussi de placer la consommation de poisson en variable supplémentaire, pour qu'elle ne perturbe pas l'analyse.
+
+```{r acm}
+acm = MCA(
+  poison, 
+  graph = F, # pour ne pas avoir les graphiques donc
+  quali.sup = c(3:4, 11), # Sick et Sex en qualitatives illustratives, ainsi que Fish
+  quanti.sup = 1:2 # Age et Time en quantitatives illustratives
+)
+```
+
+Comme pour la première ACM, le premier plan factoriel explique uniquement `r round(acm$eig[2,3])`% de la variance. Et le dernier saut important se situe à la huitième dimension. Si nous souhaitions compléter cette analyse par une autre, il serait nécessaire de conserver ces 8 dimensions. Pour notre cas, nous allons nous contenter des 3 premiers axes, qui expliquent à eux seuls `r round(acm$eig[3,3])`% de la variance.
+
+```{r eigen}
+eig = acm$eig %>% # récupération de la matrice contenant les infos sur les valeurs propres
+  data.frame() %>% # transformation en data.frame
+  mutate(
+    dimension = 1:n(), # ajout des noms de variables comme nouvelle colonne 'dimension'
+    saut = c(acm$eig[-nrow(acm$eig),2] - acm$eig[-1,2], 0) # calcul du 'saut' entre deux dimensions
+  ) 
+
+ggplot(eig, aes(dimension, percentage.of.variance)) +
+  geom_bar(stat = "identity", fill = "darkslategray") +
+  geom_line(aes(y = saut), col = "red") +
+  geom_point(aes(y = saut), col = "red") +
+  labs(x = "Composantes", y = "% variance expliquée") +
+  theme_classic() +
+  scale_x_discrete(limits = 1:11)
+```
+
+On retrouve presque les mêmes plans factoriels que lors de l'ACM sans variables illustratives. Nous allons les détailler plus tard.
+
+
+```{r}
+par(mfrow = c(2, 2), mar = c(2, 2, 0, 0) + .1)
+plot(acm, invisible = c("ind", "quali.sup", "quanti.sup"), title = "")
+legend("bottomright", "Axes 1 et 2", bty = "n")
+plot(acm, invisible = c("ind", "quali.sup", "quanti.sup"), axes = c(1, 3), title = "")
+legend("topleft", "Axes 1 et 3", bty = "n")
+plot(acm, invisible = c("ind", "quali.sup", "quanti.sup"), axes = c(2, 3), title = "")
+legend("topleft", "Axes 2 et 3", bty = "n")
+```
+
+Afin de mieux comprendre les différents axes, il est bien utile de projeter les variables supplémentaires sur les plans factoriels. Nous remarquons que l'axe 1 divise les individus malades (à gauche sur les deux premiers graphiques - `Sick_y`) des individus sans intoxication (à droite - `Sick_y`). Les axes 2 et 3 semblent eux opposer l'individu n'ayant pas consommé de poisson aux autres. Concernant le sexe, le troisième plan factoriel semble bien les opposer, à déterminer avec l'analyse des axes ci-dessous.
+
+```{r}
+par(mfrow = c(2, 2), mar = c(2, 2, 0, 0) + .1)
+plot(acm, invisible = c("ind", "var"), title = "")
+legend("bottomright", "Axes 1 et 2", bty = "n")
+plot(acm, invisible = c("ind", "var"), axes = c(1, 3), title = "")
+legend("bottomright", "Axes 1 et 3", bty = "n")
+plot(acm, invisible = c("ind", "var"), axes = c(2, 3), title = "")
+legend("bottomright", "Axes 2 et 3", bty = "n")
+```
+
+Pour l'axe 1, nous voyons qu'il oppose les symptômes (en valeurs négatives) aux *non*-symptômes. Il place aussi la *non*-consommation de patates, de courgettes et de mayonnaise, en valeurs négatives.
+
+L'axe 2 oppose la *non*-consommation de patates (en négatif) à la *non*-consommation de courgettes et de crême glacée. 
+
+Enfin, l'axe 3, place la *non*-consommation de patates et de crême glacée loin du centre de gravité.
+
+```{r}
+coord = acm$var$coord[,1:3] %>%
+  data.frame() %>%
+  rownames_to_column("modalite") %>%
+  gather(dimension, coordonnee, -modalite) %>%
+  arrange(dimension, desc(coordonnee)) %>%
+  mutate(ordre = row_number()) 
+
+ggplot(coord, aes(ordre, coordonnee, fill = coordonnee > 0)) +
+  geom_bar(stat = "identity", show.legend = F) +
+  facet_wrap(~ dimension, scale = "free") +
+  scale_x_continuous(
+    breaks = coord$ordre,
+    labels = coord$modalite,
+    expand = c(0, 0)
+  ) +
+  coord_flip() +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank(), panel.grid.major.x = element_blank()) +
+  labs(x = "Modalité", y = "Coordonnée")
+```
+
+Nous pouvons en conclure que cette analyse est intéressante sur l'axe 1 (opposition entre malades et *non*-malades). Concernant l'axe 2 et 3, ceux-ci sont fortement influencés encore par des modalités peu présentes (*non*-consommation de patates - 3 individus -, de crême glacée - 4 individus -, et de courgettes - 5 individus).
+
+
+
