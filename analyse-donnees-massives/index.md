@@ -1,5 +1,4 @@
 ---
-layout: souspage
 title: Analyse de Données Massives
 ---
 
@@ -17,5 +16,3 @@ title: Analyse de Données Massives
 1. [TP8 - Données du projet](analyse-donnees-massives-tp8.html)
 1. [TP9 - Cartographie sous `python`](analyse-donnees-massives-tp9.html)
 1. [Sujet du projet](analyse-donnees-massives-tp10.html)
-
-

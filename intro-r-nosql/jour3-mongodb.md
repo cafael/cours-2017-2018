@@ -1,6 +1,5 @@
 ---
-title: TP1 - Introduction à MongoDB
-subtitle: Analyse de Données Massives - Master 1ère année
+title: Introduction à MongoDB
 ---
 
 Dans ce TP, nous allons aborder l'utilisation de MongoDB, via l'interrogation de données dans le `shell`. MongoDB utilise le langage `JavaScript`.
@@ -163,7 +162,7 @@ db.Sportifs.findOne()
 
 Il est possible d'inclure des critères de sélection dans cette fonction, que nous verrons dans la suite. De même pour la sélection des items à afficher.
 
-Une autre fonction très utile pour mieux appréhender les données est de lister les valeurs prises par les différents items de la collection, grâce à `distinct()`. Pour spécifier un sous-item d'un item, il est nécessaire d'utiliser le formalisme `item.sousitem`.  
+Une autre fonction très utile pour mieux appréhender les données est de lister les valeurs prises par les différents items de la collection, grâce à `distinct()`. Pour spécifier un sous-item d'un item, il est nécessaire d'utiliser le formalisme `item.sousitem`.
 
 ```js
 db.Gymnases.distinct("Ville")
