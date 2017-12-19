@@ -1,10 +1,12 @@
----
-title: Stockage massif de données
-subtitle: Initiation au Big Data
-author: FX Jollois
+class: middle, center, inverse, title
+
+# Stockage massif de données
+# Initiation au Big Data
+## FX Jollois
+
 ---
 
-## Plan
+# Plan
 
 Ce cours est une introduction aux nouveaux outils de gestion de bases de données massives,
 utilisés dans des environnements *Big Data*.
@@ -14,7 +16,9 @@ utilisés dans des environnements *Big Data*.
 - Typologie
 - Compléments
 
-## Quelques sources
+---
+
+# Quelques sources
 
 - http://webdam.inria.fr/Jorge/?action=chapters
 - http://www.lsis.org/espinasseb/Supports/BD/BD_NOSQL-4p.pdf
@@ -27,13 +31,15 @@ utilisés dans des environnements *Big Data*.
 - http://nosql-database.org/
 - http://www.nosqlfordummies.com/
 
-## Retour sur les BD relationnelles
+---
+
+# Retour sur les BD relationnelles
 
 A l'heure actuelle, les BD classiquement utilisées sont les BD relationnelles :
 
 - ensemble structuré d'informations (*structure explicite*) :
 	- tables décrites par des attributs
-	- reliées entre elles par des relations 
+	- reliées entre elles par des relations
 - stockage persistant
 
 Celles-ci sont gérées dans un SGBD permettant :
@@ -42,17 +48,23 @@ Celles-ci sont gérées dans un SGBD permettant :
 - la création, la suppression, l'insertion, la modification et la recherche de valeurs (via **SQL**)
 - la sécurisation et la gestion des accès concurrents
 
-## Retour sur les BD relationnelles (suite)
+---
+
+# Retour sur les BD relationnelles (suite)
 
 Utilisées dans quasiment toutes les applications, elles ont pour avantages :
 
-- maturité importante des logiciels
-- documentation souvent très complète
-- performances globalement satisfaisantes
+- Maturité importante des logiciels
 
-## Nouveau contexte
+- Documentation souvent très complète
 
-Mais un **nouveau contexte** est apparu : 
+- Performances globalement satisfaisantes
+
+---
+
+# Nouveau contexte
+
+Mais un **nouveau contexte** est apparu :
 
 - Applications basées sur le Web (Google, Yahoo, Amazon, LinkedIn, ...)
 	- Utilisation de ressources non ou faiblement structurées (page web, textes, images, ...)
@@ -66,7 +78,9 @@ Il a donc fallu développer de nouveaux outils avec les caractéristiques suivan
 - Distribution des données pour résister à la montée en charge
 - Gestion des données non structurées, complexes et hétérogènes (sans déclaration préalable du format des données - *structure implicite*)
 
-## Premiers éléments pour la passage à l'échelle
+---
+
+# Premiers éléments pour la passage à l'échelle
 
 On distingue deux grands types de passage à l'échelle
 
@@ -78,7 +92,9 @@ On distingue deux grands types de passage à l'échelle
 
 - on ajoute des petits serveurs
 
-## Passage à l'échelle
+---
+
+# Passage à l'échelle
 
 La première coûtant rapidement très chère, la deuxième solution est celle privilégiée, selon deux possibilités :
 
@@ -86,50 +102,73 @@ La première coûtant rapidement très chère, la deuxième solution est celle p
 	- Ecritures par le maître, lecture par les esclaves
 	- Réplication directe des écritures aux esclaves (donc lecture éventuellement fausse car avant fin de la réplication)
 	- temps de réplication pouvant être très long
-- *Partitionnement* 
+
+
+- *Partitionnement*
 	- Répartition des données dans les différents noeuds
 	- Pas transparent : la répartition doit potentiellement être connue des applications
 	- Problème sur les contraintes d'intégrité à prévoir
 
+---
 
-## Quelques autres possibilités
+# Quelques autres possibilités
 
 D'autres solutions sont envisageables :
 
 - Plusieurs *Maîtres*, avec réplication
 	- gestion d'accès concurrents
+
+
 - Ne permettent que des `INSERT`, sans `UPDATE` ou `DELETE`
 	- les données sont seulement inactivées, et non supprimées
+
+
 - Limiter au maximum (voire les supprimer) les `JOIN`
 	- dénormalisation des données
 	- tables de taille (très) importantes
+
+
 - Bases de données *In-Memory*
 	- données stockées sur la **RAM**
 	- suppression des temps d'accès aux disques
 
-## Bases de données NoSQL 
+---
+
+# Bases de données NoSQL
 
 On parle maintenant de systèmes **NoSQL** (pour *Not Only SQL*)
 
 - Classe de BD non relationnelles
 	- Rien de nouveau réellement, existent depuis plus longtemps que les SBGDR
+
+
 - Pas forcément de schéma fixe des données
 - Pas forcément d'utilisation du concept de **jointure**
+
+
 - Relaxation d'au moins une des propriétés **ACID** :
-	- **A**tomicity 
+	- **A**tomicity
 	- **C**onsistancy
 	- **I**solation
 	- **D**urability
 
-## Bases de données NoSQL (suite)
+---
+
+# Bases de données NoSQL (suite)
 
 Pourquoi on en (re)parle
 
 - Explosion des réseaux sociaux
+
+
 - Croissance de l'utilisation du stockage en ligne, distribué
+
+
 - Grande dynamique de la communauté open-source
 
-## Théorème CAP
+---
+
+# Théorème CAP
 
 Proposé par Brewer (2000), puis amélioré par la suite par Gilbert et Lynch.
 
@@ -141,27 +180,37 @@ Il existe trois propriétés essentielles d'un système :
 
 **Problème** : Aucun système distribué ne peut respecter ces trois propriétés.
 
-## Théorème CAP (suite)
+---
+
+# Théorème CAP (suite)
 
 On a donc le choix entre :
 
 - **C + A** : un problème sur un des noeuds fait stopper le système (les SGBDR classiques sont plutôt dans cette catégorie)
+
+
 - **C + P** : les données ne sont pas forcément disponibles au moment de la requête
+
+
 - **A + P** : les données renvoyées ne sont pas toujours cohérentes
 
-## Conséquence du passage à l'échelle
+---
+
+# Conséquence du passage à l'échelle
 
 - Le passage à l'échelle implique (presque obligatoirement) le *partitionnement* des données
 - Il faut donc faire le choix entre *cohérence* et *disponibilité*
 - Dans pratiquement tous les systèmes, la disponibilité est préférée, et donc la cohérence stricte est abandonnée (d'où le non-respect de *ACID*)
-- Heureusement, une réponse existe : **BASE** :
+- Heureusement, une réponse existe - **BASE** :
 	- **Basically Available** : il y aura une réponse à toute requête, même si c'est du genre *failure* ou *inconsistent data*
-	- **Soft State** : le système n'est pas consistent à tout instant 
+	- **Soft State** : le système n'est pas consistent à tout instant
 	- **Eventually consistent** : le système deviendra finalement consistent, lorsqu'il ne recevra plus d'entrées
 
-Tous les systèmes actuels des géants du web sont dans cette configuration **BASE** 
+Tous les systèmes actuels des géants du web sont dans cette configuration **BASE**
 
-## Typologie NoSQL
+---
+
+# Typologie NoSQL
 
 Il existe quatre principaux types de bases de données dites NoSQL (voir [ce site web](http://nosql-database.org/), d'autres existent mais nous n'en parlerons pas ici).
 
@@ -175,9 +224,11 @@ Data Model | Performance | Scalability | Flexibility | Complexity | Functionalit
 **Graph Database**          | variable | variable | high | high | graph theory
 **Relational Database**     | variable | variable | low | moderate | relational algebra
 
-## Key-Value Store
+---
 
-Principe : 
+# Key-Value Store
+
+Principe :
 
 - Système à base de couples *clé / valeur*
 - Tableau associant des clés à un espace mémoire où sont stockées les valeurs
@@ -186,13 +237,15 @@ Principe :
 - Structure de la valeur inconnue par le système (c'est l'applicatif qui gère)
 - Modèle assimilé à une table de hashage
 
-Exemples : 
+Exemples :
 
 - [DynamoDB](http://aws.amazon.com/dynamodb/)
 - [Redis](http://redis.io/)
 - [Voldemort](http://project-voldemort.com/)
 
-## Key-Value Store (suite)
+---
+
+# Key-Value Store (suite)
 
 4 opérations possibles (**CRUD**) :
 
@@ -201,8 +254,9 @@ Exemples :
 - `update(key, value)` : on met à jour la valeur correspondant à la clé
 - `delete(key)` : on supprime la valeur correspondant à la clé
 
+---
 
-## Key-Value Store (suite)
+# Key-Value Store (suite)
 
 **Pour** :
 
@@ -214,7 +268,9 @@ Exemples :
 - Modèle très (trop ?) simple
 - Traitements complexes à faire du côté de l'application
 
-## Document-Oriented Store
+---
+
+# Document-Oriented Store
 
 Principe :
 
@@ -230,7 +286,9 @@ Exemples :
 - [CouchDB](http://couchdb.apache.org/)
 - [Elasticsearch](http://www.elasticsearch.org/)
 
-## Document-Oriented Store (suite)
+---
+
+# Document-Oriented Store (suite)
 
 Un document est composé de champs associés à des valeurs (entier, numérique, chaîne, liste, tableau), dans un format type JSON ou XML
 
@@ -238,7 +296,9 @@ Grande hétérogénéité permise entre les documents, puisque la structure de c
 
 Pas de prototypage ou de modélisation des données en amont nécessaires
 
-## Document-Oriented Store (suite)
+---
+
+# Document-Oriented Store (suite)
 
 **Pour**
 
@@ -251,7 +311,9 @@ Pas de prototypage ou de modélisation des données en amont nécessaires
 - pas fait pour des données liées
 - lenteur éventuelle sur des requêtes complexes
 
-## Column-Oriented Store
+---
+
+# Column-Oriented Store
 
 Principe :
 
@@ -267,7 +329,9 @@ Exemples :
 - [Cassandra](https://cassandra.apache.org/)
 - [Hypertable](http://hypertable.org/)
 
-## Column-Oriented Store (suite)
+---
+
+# Column-Oriented Store (suite)
 
 Il existe deux sous-types de ce genre de système :
 
@@ -276,7 +340,9 @@ Il existe deux sous-types de ce genre de système :
 
 Bien qu'ils soient étiquetés dans le même groupe pour les BD NoSQL, ces deux types ne répondent pas aux mêmes besoins et il est important de savoir ce qu'on veut faire pour choisir entre les deux
 
-## Column-Oriented Store (suite)
+---
+
+# Column-Oriented Store (suite)
 
 **Pour**
 
@@ -287,9 +353,11 @@ Bien qu'ils soient étiquetés dans le même groupe pour les BD NoSQL, ces deux 
 **Contre**
 
 - Pas adapté aux données reliées ou complexes
-- Maintenance lourde 
+- Maintenance lourde
 
-## Graph Database
+---
+
+# Graph Database
 
 Principe :
 
@@ -302,11 +370,13 @@ Principe :
 
 Exemples :
 
-- [OrientDB](http://www.orientechnologies.com/) 
+- [OrientDB](http://www.orientechnologies.com/)
 - [Neo4J](http://www.neo4j.org/)
 - [Infinite Graph](http://www.infinitegraph.com/)
 
-## Graph Database (suite)
+---
+
+# Graph Database (suite)
 
 Typiquement adapté aux traitements des problématiques de type réseaux sociaux ou de cartographie, et donc beaucoup plus rapide qu'un SGBDR dans un tel cadre
 
@@ -322,33 +392,41 @@ Particulièrement adapté à ce qu'on appelle le *Web sémantique* et les moteur
 
 - Partitionnement (de type *sharding*)
 
-## Lequel prendre ?
+---
+
+# Lequel prendre ?
 
 - Faire un tour sur [db-engines.com](http://db-engines.com/en/) pour voir les BD existantes et les tendances du moment
 - Benchmarking possible avec [YCSB](http://labs.yahoo.com/news/yahoo-cloud-serving-benchmark/)
 	- *Yahoo! Cloud Serving Benchmark* (code disponible sur [GitHub](https://github.com/brianfrankcooper/YCSB/))
-- Il y a un très bon [comparatif](http://www.altoros.com/vendor_independent_comparison_of_nosql_databases.html) fait par un cabinet indépendant 
+- Il y a un très bon [comparatif](http://www.altoros.com/vendor_independent_comparison_of_nosql_databases.html) fait par un cabinet indépendant
 	- rapport disponible sur demande
 	- basé sur *YCSB*
-- Test possible à faible coût avec [Amazon Web Service](http://aws.amazon.com/) 
+- Test possible à faible coût avec [Amazon Web Service](http://aws.amazon.com/)
 - Réfléchir à l'utilisation à venir et surtout
 	- Quelles requêtes je vais avoir besoin de faire ?
 	- Quelles performances je veux avoir en lecture ? en écriture ?
 - Ne pas forcément rejeter les BD relationnelles sans avoir peser le pour et le contre
 
-## Utilisations principales par type de BD
+---
+
+# Utilisations principales par type de BD
 
 - *Key-Value Store*
 	- dépôt de données avec besoins de requêtage très simples
 	- système de stockage de cache ou dʼinformation de sessions distribuées
 	- profils, préférences dʼutilisateur, paniers d'achat, capteurs, logs
+
+
 - *Column Store*
 	- logging et analyse de clientèle (NetFlix)
 	- optimisation de recherche (eBay)
 	- BI (Adobe)
 	- Analyse d'audience
 
-## Utilisations principales par type de BD (suite)
+---
+
+# Utilisations principales par type de BD (suite)
 
 - *Document Store*
 	- Enregistrement dʼévénements
@@ -356,10 +434,10 @@ Particulièrement adapté à ce qu'on appelle le *Web sémantique* et les moteur
 	- Web analytique ou analytique temps-réel
 	- Catalogue de produits
 	- Systèmes d'exploitation
+
+
 - *Graph database*
 	- Moteurs de recommandation
 	- BI, Semantic Web
 	- Social Computing
 	- Données géospatiales
-
-
