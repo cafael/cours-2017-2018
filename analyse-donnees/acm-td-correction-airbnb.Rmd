@@ -1,0 +1,244 @@
+---
+title: "ACM - TD"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+```
+
+Dans ce TD, nous aborderons la réalisation de l'ACM sous R. Vous devez exécuter l'ensemble des commandes réalisées ici (et les comprendre), afin de pouvoir les reproduire.
+
+En plus des packages présentés ci-dessous, nous devrons utiliser d'autres packages (inclus dans le chargement du package `tidyverse`) pour réaliser les graphiques et autres tableaux.
+
+```{r package}
+library(tidyverse)
+library(scales)
+library(gridExtra)
+library(FactoMineR)
+```
+
+## AirBnB à Paris
+
+Le site [Inside AirBnB](http://insideairbnb.com/) met à disposition les informations sur les logements proposés sur le site [AirBnB](https://www.airbnb.fr/) dans différentes villes, et en particulier [Paris](http://insideairbnb.com/paris/). Nous allons uiliser les données du [2 septembre 2015](airbnb-paris-2015-09-02.csv) (fichier légèrement retravaillé).
+
+```{r}
+airbnb = read.table("airbnb-paris-2015-09-02.csv", 
+                    header = T, sep = ",", quote = '"')
+
+DT::datatable(head(airbnb, 100))
+```
+
+Nous allons nous intéresser aux informations sur les caractéristiques des logements (ensemble des variables binaires).
+
+Vous devez donc réaliser les étapes suivantes :
+
+- Décrire rapidement les données
+- Réaliser une ACM et produire les graphiques nécessaires à l'interprétation
+    - ne pas hésiter à ajouter des variables en illustratives
+- Que peut-on dire globalement ?
+
+## Un peu de correction des données
+
+### `zipcode`
+
+```{r}
+tab_zipcode = airbnb %>% group_by(zipcode) %>% summarise(n = n()) %>% arrange(n)
+```
+
+Si nous regardons les valeurs contenues dans cette variable, nous nous apercevons qu'il y a quelques erreurs de saisies, comme par exemple : `r paste(head(tab_zipcode$zipcode), collapse = ", ")`. Nous allons les mettre en données manquantes, vu le peu de logements concernés. 
+
+De plus, il y a quelques logements dans des départements limitrophes à Paris. Ceux-la étant aussi peu nombreux, on mettra une valeur manquante pour ceux-la aussi.
+
+On va en profiter pour calculer automatiquement l'arrondissement (entre 1 et 20 donc).
+
+```{r}
+airbnb = airbnb %>%
+  mutate(code = as.numeric(as.character(zipcode))) %>%
+  mutate(code = ifelse(between(code, 75001, 75020) | code == 75116, code, NA)) %>%
+  mutate(arrond = ifelse(code == 75116, 16, code - 75000), zipcode = NULL, code = NULL)
+```
+
+
+## Description des données
+
+Nous pouvons déjà placer les logements par rapport à leur coordonnée. Nous identifions facilement les contours de Paris et de la Seine.
+
+```{r}
+ggplot(airbnb, aes(longitude, latitude, col = factor(arrond))) +
+  geom_point() +
+  theme_void() +
+  labs(col = "Arrondissements")
+```
+
+Il est difficile de bien remarquer les arrondissements avec beaucoup de logements par rapport aux autres. On peut réaliser un autre type de graphique, représentant la densité en 2 dimensions. On distingue moins la forme de Paris.
+
+```{r}
+ggplot(airbnb, aes(longitude, latitude)) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon") +
+  theme_void()
+```
+
+Une autre information est de projeté les prix (avec une couleur en fonction de celui-ci) sur les logements (on prend le logarithme en base 10, pour atténuer l'effet des valeurs extrêmes et avoir une échelle plus facilement lisible).
+
+```{r}
+ggplot(airbnb, aes(longitude, latitude, col = price)) +
+  geom_point(size = 1) +
+  theme_void() +
+  scale_color_continuous(trans = "log10", labels = round) +
+  labs(col = "Prix")
+```
+
+On peut aussi établir la distribution des variables des caractéristiques du logement. Comme déjà indiqué en TD, il y a certaines variables que l'on peut dès à présent écarter : `Cat.s`, `Dog.s`, `Gym`, `Hot.Tub`, `Pool` et `Washer...Dryer`.
+
+```{r}
+df = airbnb %>% select(1, 19:53) %>%
+  gather(var, val, -id)
+ggplot(df, aes(val, fill = val)) +
+  geom_bar() +
+  facet_wrap(~ var, scales = "free") +
+  theme_void()
+```
+
+On peut aussi regarder si le prix varie en fonction de la caractéristique. On peut voir quelques tendances, sans qu'il y ait de différence flagrante sur une des variables. Ici, le prix a été transformé avec un log10 et l'axe $y$ est limité entre 50 et 150 pour le rendre plus lisible.
+
+```{r}
+df = airbnb %>% select(1, 12, 19:53) %>%
+  gather(var, val, -id, -price)
+ggplot(df, aes(val, price, fill = val)) +
+  geom_boxplot() +
+  scale_y_continuous(trans = "log10", limits = c(50, 150)) +
+  facet_wrap(~ var, scales = "free") +
+  theme_void()
+```
+
+Par contre, si on analyse le prix (en log10) en fonction de l'arrondissement, on apercoit bien évidemment des différences importantes de prix.
+
+```{r}
+ggplot(airbnb, aes(factor(arrond), price, fill = factor(arrond))) +
+  geom_boxplot(show.legend = FALSE) +
+  scale_y_continuous(trans = "log10") +
+  theme_classic()
+```
+
+D'autres graphiques intéressants seraient de comparer les caractéristiques dans les logements, par arrondissement. On remarque des différences pour certaines, mais sans que cela soit flagrant.
+
+```{r, fig.width=8}
+df = airbnb %>% select(1, 19:53, 54) %>%
+  gather(var, val, -id, -arrond)
+ggplot(df, aes(factor(arrond), fill = val)) +
+  geom_bar(position = "fill", show.legend = FALSE) +
+  facet_wrap(~ var) +
+  theme_void()
+```
+
+
+## ACM
+
+Comme on peut l'imaginer, il est difficile de tirer des conclusions à partir des graphiques précédents. C'est dans ce cas de présences nombreuses de variables qualitatives que l'utilisation d'une ACM est intéressante. Comme nous l'avons dit en TD, nous allons nous concentrer sur peu de variables pour simplifier l'interprétation de chaque axe. Pour le choix, nous allons utliser les caractéristiques qui sont globalement présentes dans les équipements, en évitant celles exotiques (piscine, salle de gym, ...)
+
+```{r}
+airbnb2 = airbnb %>% 
+  mutate(arrond = factor(arrond)) %>%
+  select(
+    TV, Essentials, Internet, Elevator.in.Building, 
+    Dryer, Shampoo, Family.Kid.Friendly,
+    Smoking.Allowed, Pets.Allowed,
+    arrond, price
+  )
+acm = MCA(
+  airbnb2,
+  graph = FALSE,
+  quali.sup = 10,
+  quanti.sup = 11
+)
+```
+
+Le premier axe explique ici `r round(acm$eig[1,3])`% de l'information présente dans les données, et le premier plan `r round(acm$eig[2,3])`%. Nous allons nous concentrer ici sur les 3 premiers axes, représentant `r  round(acm$eig[3,3])`% de la variance.
+
+```{r eigen}
+eig = acm$eig %>%
+  data.frame() %>%
+  mutate(
+    dimension = 1:n(),
+    saut = c(acm$eig[-nrow(acm$eig),2] - acm$eig[-1,2], 0)
+  )
+ggplot(eig, aes(dimension, percentage.of.variance)) +
+  geom_bar(stat = "identity", fill = "darkslategray") +
+  geom_line(aes(y = saut), col = "white") +
+  geom_point(aes(y = saut), col = "white") +
+  labs(x = "Composantes", y = "% variance expliquée") +
+  theme_classic() +
+  scale_x_discrete(limits = 1:nrow(eig))
+```
+
+A l'aide du graphique ci-dessous, nous pouvons en déduire les éléments suivants :
+
+- **Axe 1** : opposition entre les logements peu équipés globalement (pas d'internet, pas les essentiels, pas de TV), et les logements plus accueillants (animaux acceptés, équipés pour les bébés, ...) ;
+- **Axe 2** : logements avec des propriétaires peu contraignants (animaux acceptés et fumeurs acceptés) loin des autres (les valeurs négatives sont très proches de 0) ;
+- **Axe 3** : analyse compliquée de cet axe.
+
+```{r}
+coord = acm$var$coord[,1:3] %>%
+  data.frame() %>%
+  rownames_to_column("modalite") %>%
+  gather(dimension, coordonnee, -modalite) %>%
+  arrange(dimension, desc(coordonnee)) %>%
+  mutate(ordre = row_number()) 
+
+ggplot(coord, aes(ordre, coordonnee, fill = coordonnee > 0)) +
+  geom_bar(stat = "identity", show.legend = F) +
+  facet_wrap(~ dimension, scale = "free") +
+  scale_x_continuous(
+    breaks = coord$ordre,
+    labels = coord$modalite,
+    expand = c(0, 0)
+  ) +
+  coord_flip() +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank(), panel.grid.major.x = element_blank()) +
+  labs(x = "Modalité", y = "Coordonnée")
+```
+
+On peut bien évidemment choisir de représenter les trois premiers plans factoriels (1 vs 2, 1 vs 3 et 2 vs 3), comme ci-dessous.
+
+```{r}
+df = acm$var$coord %>%
+  data.frame() %>%
+  rownames_to_column("modalite")
+
+p1 = ggplot(df, aes(Dim.1, Dim.2, label = modalite)) +
+  geom_text(vjust = "inward", hjust = "inward") +
+  theme_classic()
+
+p2 = ggplot(df, aes(Dim.1, Dim.3, label = modalite)) +
+  geom_text(vjust = "inward", hjust = "inward") +
+  theme_classic()
+
+p3 = ggplot(df, aes(Dim.2, Dim.3, label = modalite)) +
+  geom_text(vjust = "inward", hjust = "inward") +
+  theme_classic()
+
+grid.arrange(p1, p2, p3, layout_matrix = matrix(c(1, 1, 2, 2, 4, 3, 3, 4), 2, 4, byrow = T))
+```
+
+En projetant les arrondissements sur le premier axe factoriel, on remarque qu'il y a opposition entre les 8ème et 16ème arrondissements (avec a priori des logements bien équipés), et les arrondissements plus modeste (18ème et 20ème en tête, avec des logements moins bien équipés). Cette oppposition se retrouve sur le deuxième axe, avec comme arrondissements bien équipés les 4ème, 6ème et 7ème, et comme arrondissements moins bien lotis le 19ème. Le troisième axe n'apporte pas de différence flagrante entre les arrondissements.
+
+```{r}
+par(mfrow = c(1, 2))
+plot(acm, invisible = c("ind", "var", "quanti.sup"))
+plot(acm, invisible = c("ind", "var", "quanti.sup"), axes = c(1, 3))
+```
+
+La représentation du prix ne nous apporte pas non plus d'informations.
+
+```{r}
+par(mfrow = c(1, 2))
+plot(acm, choix = "var", invisible = c("var", "quali.sup"))
+plot(acm, choix = "var", invisible = c("var", "quali.sup"), axes = c(1, 3))
+```
+
+> Ce jeu de données est très complets et mérite sûrement d'autres analyses.
