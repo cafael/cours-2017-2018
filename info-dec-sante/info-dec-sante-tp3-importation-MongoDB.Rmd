@@ -16,7 +16,7 @@ On se connecte déjà à la base de données. Pour information, si la base de do
 
 ```{r}
 library(mongolite)
-bd = mongo(url = "mongodb://193.51.82.104:2231",
+bd = mongo(url = "mongodb://193.51.82.104:2343",
            db = "medicaments",
            collection = "import20161109")
 ```
@@ -38,12 +38,25 @@ for (i in 1:nrow(CIS)) {
     if (length(cpd) > 0) temp$CPD = cpd
     gener = subset(CIS_GENER, CodeCIS == temp$CodeCIS, select = -CodeCIS)
     if (length(gener) > 0) temp$GENER = gener
-    smr = subset(CIS_HAS_SMR, CodeCIS == temp$CodeCIS, select = -CodeCIS)
+    smr = subset(CIS_SMR, CodeCIS == temp$CodeCIS, select = -CodeCIS)
     if (length(smr) > 0) temp$SMR = smr
-    asmr = subset(CIS_HAS_ASMR, CodeCIS == temp$CodeCIS, select = -CodeCIS)
+    asmr = subset(CIS_ASMR, CodeCIS == temp$CodeCIS, select = -CodeCIS)
     if (length(asmr) > 0) temp$ASMR = asmr
+    
+    for (n in names(temp)) {
+      if (is.data.frame(temp[[n]])) {
+        if (nrow(temp[[n]]) == 0) {
+          temp[[n]] = NULL
+        }
+      } else {
+        if (is.na(temp[[n]])) {
+          temp[[n]] = NULL
+        }
+      }
+    }
     data[[i]] = temp
 }
+library(jsonlite)
 df <- fromJSON(toJSON(data, auto_unbox = T))
 bd$insert(df[1:5000,])
 bd$insert(df[5001:10000,])

@@ -109,7 +109,7 @@ On peut interroger une base de données de ce type via le package `mongolite` da
 
 ```{r}
 library(mongolite)
-m = mongo(url = "mongodb://193.51.82.104:2231",
+m = mongo(url = "mongodb://193.51.82.104:2343",
           db = "world",
           collection = "country")
 ```
@@ -346,9 +346,11 @@ Vous pouvez vous connecter à cette base à l'aide du code suivant.
 
 ```{r, eval = FALSE}
 library(mongolite)
-bd = mongo(url = "mongodb://193.51.82.104:2231",
+bd = mongo(url = "mongodb://193.51.82.104:2343",
            db = "medicaments",
            collection = "import20161109")
+bd$count()
+bd$find(limit = 1)
 ```
 
 

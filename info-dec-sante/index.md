@@ -1,5 +1,4 @@
 ---
-layout: souspage
 title: Informatique Décisionnelle
 subtitle: LP MDS Santé
 ---
