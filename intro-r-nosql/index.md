@@ -26,4 +26,4 @@ Ce cours n'est pas exhaustif et ne vous soustrait pas à une exploration de l'ai
 
 - [Données NoSQL sous MongoDB](jour3-mongodb)
     - [correction](jour3-mongodb-correction.js)
-- [Interrogation MongoDB dans R](jour4-rmongodb.html)
+- [Interrogation MongoDB dans R](jour4-r-et-mongodb.html)
