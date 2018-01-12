@@ -129,7 +129,8 @@ db.Gymnases.find(
     {
         "_id": 0,
         "NomGymnase": 1,
-        "Ville": 1
+        "Ville": 1,
+        "Seances.Libelle": 1
     }
 )
 

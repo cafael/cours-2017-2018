@@ -27,3 +27,17 @@ Ce cours n'est pas exhaustif et ne vous soustrait pas à une exploration de l'ai
 - [Données NoSQL sous MongoDB](jour3-mongodb)
     - [correction](jour3-mongodb-correction.js)
 - [Interrogation MongoDB dans R](jour4-r-et-mongodb.html)
+    - correction `gym` : [html](jour4-r-et-mongodb-correction-gym.html) et [Rmd](jour4-r-et-mongodb-correction-gym.Rmd)
+    - correction `trafic`:  [html](jour4-r-et-mongodb-correction-trafic.html) et [Rmd](jour4-r-et-mongodb-correction-trafic.Rmd)
+
+### Sujet du mini-projet
+
+Vous devez faire en petit groupe (2 ou 3) une application web en `R` et `shiny`, sur les données de trafic de la ville de Paris. Vous pouvez orienter votre travail selon différents points de vue :
+
+- dataviz, avec exploration possible des données ;
+- analyse exploratoire, avec une segmentation des capteurs ou autre ;
+- modélisation, avec une prévision du trafic pour les premiers de 2018 par exemple ;
+- ...
+
+La notation se fera sur la base de cette application. Vous devez idéalement publier votre application sur [shinyapps.io](http://www.shinyapps.io), en intégrant une page descriptif (dans le ficher `README.md` par exemple), ainsi que diffuser le code sur [github.io](http://www.github.io).
+
