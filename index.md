@@ -14,7 +14,7 @@ title: Enseignement
 - LP Data-Mining
     - [Méthodes avancées](machine-learning/) (ou *Machine Learning*)
 - DU Analyste Big Data
-    - [Introduction à R](initiation-r-du.html)
+    - [Introduction à R](du-abd-r/)
 - DU Dataviz
     - [Visualisation avec R](visualisation-donnees.html)
     - [Visualisation avec D3.js](visualisation-donnees-d3)
