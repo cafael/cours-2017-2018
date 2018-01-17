@@ -214,36 +214,28 @@ cap1111 %>%
 
 ### Récupérer les coordonnées du tronçon de chaque capteur, puis les afficher sur une carte
 
-en cours...
+On récupère les éléments, mais en `list`, avec `iterate()`. Ensuite, on créée chaque ligne, avec les fonctions `Line()` et `Lines()` du package `sp`. Cela nous permet de créer des `SpatialLines`, puis de les afficher simplement dans la carte.
 
 ```{r, eval = FALSE}
-capteurs = cap$iterate(fields = '{ "fields.geo_shape.coordinates": 1}')$batch()
+capteurs = cap$iterate(
+  fields = '{ "fields.geo_shape.coordinates": 1,
+              "fields.id_arc": 1, "fields.ir_arc_tra": 1}'
+)$batch()
 
+lst_lines = lapply(
+  Filter(function(e) { !is.null(e$fields$id_arc)}, capteurs),
+  function(e) {
+    c = e$fields$geo_shape$coordinates
+    i = i + 1
+    Lines(Line(rbind(unlist(c[[1]]), unlist(c[[2]]))),
+          ID = e$fields$id_arc)
+  }
+)
 
-e = capteurs[[1]]
-
-c = e$fields$geo_shape$coordinates
-
-Line(t(sapply(c, function(cc) { cc })))
-
-
-capteurs$lng = sapply(capteurs$fields$geo_shape$coordinates, 
-                      function(e) { 
-                        if (!is.null(e)) return(e[1:2]); 
-                        return(NA) 
-                      })
-capteurs$lat = sapply(capteurs$fields$geo_shape$coordinates, 
-                      function(e) { 
-                        if (!is.null(e)) return(e[3:4]); 
-                        return(NA) 
-                      })
-
-e = capteurs$fields$geo_shape$coordinates[1]
-
-Lines(Line(e), ID = 1)
+spl_lst <- SpatialLines(lst_lines)
 
 paris %>%
-  addPolylines(data = capteurs, lng = ~lng, lat = ~lat)
+  addPolylines(data = spl_lst, color = "red")
 ```
 
 
