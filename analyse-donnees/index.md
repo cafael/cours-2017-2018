@@ -26,3 +26,7 @@ subtitle: DUT STID 2ème Année en alternance
         - Correction TD : [HTML](acm-td-correction.html) et [Rmd](acm-td-correction.Rmd)
         - Correction *AirBnB* : [HTML](acm-td-correction-airbnb.html) et [Rmd](acm-td-correction-airbnb.Rmd)
 
+- Classification Hiérachique Ascendante (ou **CAH**)
+    - [Cours](cah-cours.html)
+    - [TD](cah-td.html)
+    - [TP](cah-tp.html)
