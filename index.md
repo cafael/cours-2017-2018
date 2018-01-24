@@ -16,9 +16,9 @@ title: Enseignement
 - DU Analyste Big Data
     - [Introduction à R](du-abd-r/)
 - DU Dataviz
-    - [Visualisation avec R](visualisation-donnees.html)
-    - [Visualisation avec D3.js](visualisation-donnees-d3)
-    - [Visualisation avec Tableau](visualisation-donnees-tableau)
+    - [Visualisation avec R](du-dataviz/visualisation-donnees.html)
+    - [Visualisation avec D3.js](du-dataviz/visualisation-donnees-d3)
+    - [Visualisation avec Tableau](du-dataviz/visualisation-donnees-tableau)
 
 ## UFR Math-Info
 
