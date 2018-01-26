@@ -1,0 +1,191 @@
+---
+title: "CAH - TD - *correction*"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(FactoMineR)
+library(tidyverse)
+library(knitr)
+```
+
+## Données
+
+La banque mondiale fournit un grand nombre de données, dont des indicateurs de gouvernance au niveau mondial (voir [ici](https://data.worldbank.org/data-catalog/worldwide-governance-indicators)). Nous allons travailler sur quelques uns comme ci-dessous.
+
+```{r import}
+wgi.m = read_csv("WGI_Data.csv", quote = '"') %>%
+  mutate_at("Value", funs(as.numeric))
+wgi = wgi.m %>% 
+  select(`Country Name`, `Series Code`, Value) %>% 
+  spread(`Series Code`, Value) %>%
+  na.omit()
+knitr::kable(head(wgi))
+```
+
+## CAH sur les données d'origine
+
+Nous appliquons la CAH directement sur les données, car les variables ont toutes une moyenne proche de 0 et un écart-type proche de 1. Nous utilisons la distance euclidienne et testons les trois méthodes d'agrégation suivantes : complet, simple et Ward.
+
+```{r cah}
+d = dist(scale(wgi[-1]))
+h_comp = hclust(d)
+h_sing = hclust(d, method = "single")
+h_ward = hclust(d, method = "ward.D2")
+```
+
+Nous obtenons ainsi les trois dendrogrammes suivants. L'arbre obtenu pour le lien simple est très difficilement lisible. Il semble qu'il ne dégage pas réellement une structure en classes. Pour le lien complet, nous pouvons hésiter entre 2, 3 et 4 classes. Pour le critère de Ward, le choix se limite à 2 classes ou 4 classes.
+
+```{r dendrogrammes}
+par(mfrow = c(1, 3), mar = c(2, 2, 2, 0) + .1)
+plot(h_comp, hang = -1, labels = NULL, main = "Complet")
+plot(h_sing, hang = -1, labels = NULL, main = "Simple")
+plot(h_ward, hang = -1, labels = NULL, main = "Ward")
+```
+
+Il est possible de calculer automatiquement les valeurs de $R^2$ et de $PseudoF$. Dans ce cas, nous en déduisons les nombres de classes suivants pour chaque méthode :
+
+- *Complet* : 4 classes ($PseudoF$ maximum)
+- *Simple* : 5 classes (idem et palier sur le $R^2$)
+- *Ward* : 2 ($PseudoF$ maximum) ou 4 classes (pic sur le $PseudoF$)
+
+```{r}
+calcul <- function(df, h, k) {
+  z = cutree(h, k)
+  gk = apply(df, 2, tapply, z, mean)
+  g = apply(df, 2, mean)
+  I = sum(rowSums((df - matrix(g, nrow(df), ncol(df), byrow = T))**2))
+  if (k == 1) {
+    W = I
+  } else {
+    W = sum(rowSums((df - gk[z,])**2))
+  }
+  B = I - W
+  r2 = B / I
+  PsF = ((r2)/(k - 1))/((1 - r2)/(nrow(df) - k))
+  c(k = k, I = I, W = W, B = B, r2 = r2, PsF = ifelse(PsF == Inf, NA, PsF))
+}
+crit_comp = t(sapply(1:20, calcul, df = wgi[-1], h = h_comp))
+crit_sing = t(sapply(1:20, calcul, df = wgi[-1], h = h_sing))
+crit_ward = t(sapply(1:20, calcul, df = wgi[-1], h = h_ward))
+par(mfrow = c(3, 2), mar = c(2, 2, 2, 0) + .1)
+plot(r2 ~ k, data = crit_comp, type = "b", main = "R2 - Complet")
+plot(PsF ~ k, data = crit_comp, type = "b", main = "PseudoF - Complet")
+plot(r2 ~ k, data = crit_sing, type = "b", main = "R2 - Simple")
+plot(PsF ~ k, data = crit_sing, type = "b", main = "PseudoF - Simple")
+plot(r2 ~ k, data = crit_ward, type = "b", main = "R2 - Ward")
+plot(PsF ~ k, data = crit_ward, type = "b", main = "PseudoF - Ward")
+```
+
+Nous en déduisons donc les partitions, avec les moyennes pour chaque variable comme ci-dessous.
+
+```{r}
+z_comp = cutree(h_comp, 4)
+z_sing = cutree(h_sing, 5)
+z_ward1 = cutree(h_ward, 2)
+z_ward2 = cutree(h_ward, 4)
+```
+
+- Lien complet en 4 classes
+
+```{r}
+kable(apply(wgi[-1], 2, tapply, z_comp, mean))
+```
+
+- Lien simple en 5 classes
+
+```{r}
+kable(apply(wgi[-1], 2, tapply, z_sing, mean))
+```
+
+- Critère de Ward en 2 classes
+
+```{r}
+kable(apply(wgi[-1], 2, tapply, z_ward1, mean))
+```
+
+- Critère de Ward en 4 classes
+
+```{r}
+kable(apply(wgi[-1], 2, tapply, z_ward2, mean))
+```
+
+Bien évidemment, il est plus lisible de projeter ces partitions sur le premier plan factoriel de l'ACP (qui représente 91% de l'information). On voit que la partition obtenue avec le lien simple n'est pas du tout informative dans ce cas. Les partitions obtenues via le lien complet ou le critère de Ward avec 4 classes semblent très proches. La partition à 2 classes via Ward est moins fine. 
+
+```{r}
+couleurs = c("orange", "steelblue", "red", "green2")
+par(mfrow = c(2, 2), mar = c(2, 2, 2, 0) + .1)
+acp = PCA(wgi[-1], graph = FALSE)
+plot(acp$ind$coord, col = couleurs[z_comp], 
+     pch = 19, main = "complet")
+plot(acp$ind$coord, col = couleurs[z_sing], 
+     pch = 19, main = "simple")
+plot(acp$ind$coord, col = couleurs[z_ward1], 
+     pch = 19, main = "ward k = 2")
+plot(acp$ind$coord, col = couleurs[z_ward2], 
+     pch = 19, main = "ward k = 4")
+```
+
+Voici les pays contenus dans chaque classe (ainsi que la moyenne des variables), de la partition de Ward en 4 classes.
+
+```{r, results='asis', comment=""}
+presentation_classe <- function(df, z, k) {
+  df = df %>% mutate(classe = z) %>% filter(classe == k) %>% select(-classe)
+  cat("- Classe ", k, " : ", 
+      paste((df %>% select(1))$`Country Name`, collapse = "; "),
+      "\n")
+  print(kable(df %>% select(-1) %>% summarise_all(funs(mean))))
+  cat("\n")
+}
+for (l in 1:4)
+  presentation_classe(wgi, z_ward2, l)
+```
+
+Il est possible de comparer plus finement les classes de manière graphique, avec des boîtes à moustaches.
+
+```{r}
+wgi %>% 
+  mutate(classe = factor(z_ward2)) %>% 
+  gather(var, val, -`Country Name`, -classe) %>%
+  ggplot(aes(classe, val, fill = classe)) +
+  geom_boxplot(show.legend = FALSE) +
+  scale_fill_manual(values = couleurs) +
+  facet_wrap(~ var) +
+  theme_classic() +
+  theme(axis.title = element_blank())
+```
+
+
+## Et sur les résultats de l'ACP
+
+En appliquant la CAH sur les coordonnées obtenues après l'ACP (3 axes retenus pour 96% de variance expliquée). En regardant les résultats, nous voyons qu'il est possible de soit couper en 2 classes, soit en 4 classes (mais de manière moins marquée que précédemment). Nous faisons le choix ici de conserver 4 classes, pour plus de finesse de la partition.
+
+```{r}
+par(mar = c(2, 2, 2, 0) + .1, mfrow = c(2, 2))
+h_acp = hclust(dist(acp$ind$coord[,1:3]), method = "ward.D2")
+crit_acp = t(sapply(1:20, calcul, df = wgi[-1], h = h_acp))
+plot(r2 ~ k, data = crit_acp, type = "b", main = "R2")
+plot(PsF ~ k, data = crit_acp, type = "b", main = "PseudoF")
+z_acp = cutree(h_acp, 4)
+plot(h_acp, hang = -1, labels = FALSE, main = "sur ACP")
+plot(acp$ind$coord, col = couleurs[z_acp], pch = 19)
+```
+
+La partition obtenue semble sensiblement différente de celle obtenue avec le critère de Ward sur l'ensemble des variables. En regardant le croisement de ces deux partitions, nous remarquons qu'elles diffèrent sur `r 22+4+18` individus. 
+
+```{r}
+t = table(z_ward2, z_acp)
+t %>% data.frame() %>%
+  ggplot(aes(z_ward2, z_acp, fill = Freq)) +
+  geom_bin2d(stat = "identity", show.legend = FALSE) +
+  scale_fill_continuous(low = "white", high = "steelblue") +
+  theme_classic() +
+  labs(x = "Ward sur données initiales",
+       y = "Ward sur axes ACP") +
+  geom_text(aes(label = ifelse(Freq == 0, "", Freq))) +
+  theme(axis.line = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+```
+

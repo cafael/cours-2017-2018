@@ -29,4 +29,4 @@ subtitle: DUT STID 2ème Année en alternance
 - Classification Hiérachique Ascendante (ou **CAH**)
     - [Cours](cah-cours.html)
     - [TD](cah-td.html)
-    - [TP](cah-tp.html)
+        - Correction TD : [HTML](cah-td-correction.html) et [Rmd](cah-td-correction.Rmd)
