@@ -63,7 +63,10 @@ Pour cela, vous devez calculer la somme des superficie ET la nombre de gymnase (
 ```js
 db.Gymnases.mapReduce(
     function() {
-        emit(this.Ville, { "nb": 1, "surface": this.Surface, "surfMoy": this.Surface })
+        emit(this.Ville, { 
+            "nb": 1, 
+            "surface": this.Surface 
+        })
     },
     function(cle, valeurs) {
         var nb = 0, surface = 0;
@@ -71,7 +74,11 @@ db.Gymnases.mapReduce(
             nb += val.nb;
             surface += val.surface;
         }
-        return { "nb": nb, "surface": surface, "surfMoy": Math.round(100 * surface / nb) / 100 }
+        return { 
+            "nb": nb, 
+            "surface": surface, 
+            "surfMoy": Math.round(100 * surface / nb) / 100 
+        }
     },
     { out: { inline: 1 }}
 )
