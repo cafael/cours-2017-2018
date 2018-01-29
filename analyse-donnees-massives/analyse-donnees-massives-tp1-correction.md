@@ -1,7 +1,5 @@
 ---
-layout: default
 title: TP1 - Introduction à MongoDB - *correction*
-subtitle: Analyse de Données Massives - Master 1ère année
 ---
 
 ## A faire
@@ -12,8 +10,7 @@ Répondre aux questions suivantes
 
 ```js
 db.Sportifs.find({
-        "Age": { "$gte": 20 },
-        "Age": { "$lte": 30 }
+        "Age": { "$gte": 20, "$lte": 30 }
     },
     {
         "_id": 0,
@@ -29,7 +26,7 @@ db.Sportifs.find({
 db.Gymnases.find(
     {
         "Ville": { "$in": [ "VILLETANEUSE", "SARCELLES"]},
-        "Surface": { "$gte": 400 }
+        "Surface": { "$gt": 400 }
     },
     {
         "_id": 0,
@@ -77,13 +74,12 @@ db.Gymnases.find(
 db.Gymnases.aggregate([
     { $unwind : "$Seances" },
     { $match: { "Seances.Libelle" : "Hand ball" }},
-    { $project: { 
-        "Gymnase" : "$NomGymnase", 
-        "Ville" : "$Ville",
-        "Jour" : { $toLower : "$Seances.Jour" }
-    }},
     { $group: {
-        "_id": { "Nom": "$Gymnase", "Ville": "$Ville", "Jour": "$Jour" },
+        "_id": { 
+            "Nom": "$Gymnase", 
+            "Ville": "$Ville", 
+            "Jour": { $toLower: "$Seances.Jour"} 
+        },
         "nb": { $sum: 1 }
     }},
     { $sort: {
