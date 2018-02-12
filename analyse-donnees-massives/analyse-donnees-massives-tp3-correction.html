@@ -11782,13 +11782,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fichier</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;donnees/Iris.txt&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fichier</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Iris.txt&quot;</span><span class="p">)</span>
 <span class="n">lignesBrutes</span> <span class="o">=</span> <span class="n">fichier</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 <span class="n">fichier</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="n">lignesBrutes</span>
+<span class="n">lignesBrutes</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -11801,163 +11801,17 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[1]:</div>
+<div class="prompt output_prompt">Out[2]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#34;&#39;Sepal.Length&#39;;&#39;Sepal.Width&#39;;&#39;Petal.Length&#39;;&#39;Petal.Width&#39;;&#39;Species&#39;\n&#34;,
- &#34;5.1;3.5;1.4;0.2;&#39;setosa&#39;\n&#34;,
- &#34;4.9;3;1.4;0.2;&#39;setosa&#39;\n&#34;,
- &#34;4.7;3.2;1.3;0.2;&#39;setosa&#39;\n&#34;,
- &#34;4.6;3.1;1.5;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5;3.6;1.4;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5.4;3.9;1.7;0.4;&#39;setosa&#39;\n&#34;,
- &#34;4.6;3.4;1.4;0.3;&#39;setosa&#39;\n&#34;,
- &#34;5;3.4;1.5;0.2;&#39;setosa&#39;\n&#34;,
- &#34;4.4;2.9;1.4;0.2;&#39;setosa&#39;\n&#34;,
- &#34;4.9;3.1;1.5;0.1;&#39;setosa&#39;\n&#34;,
- &#34;5.4;3.7;1.5;0.2;&#39;setosa&#39;\n&#34;,
- &#34;4.8;3.4;1.6;0.2;&#39;setosa&#39;\n&#34;,
- &#34;4.8;3;1.4;0.1;&#39;setosa&#39;\n&#34;,
- &#34;4.3;3;1.1;0.1;&#39;setosa&#39;\n&#34;,
- &#34;5.8;4;1.2;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5.7;4.4;1.5;0.4;&#39;setosa&#39;\n&#34;,
- &#34;5.4;3.9;1.3;0.4;&#39;setosa&#39;\n&#34;,
- &#34;5.1;3.5;1.4;0.3;&#39;setosa&#39;\n&#34;,
- &#34;5.7;3.8;1.7;0.3;&#39;setosa&#39;\n&#34;,
- &#34;5.1;3.8;1.5;0.3;&#39;setosa&#39;\n&#34;,
- &#34;5.4;3.4;1.7;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5.1;3.7;1.5;0.4;&#39;setosa&#39;\n&#34;,
- &#34;4.6;3.6;1;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5.1;3.3;1.7;0.5;&#39;setosa&#39;\n&#34;,
- &#34;4.8;3.4;1.9;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5;3;1.6;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5;3.4;1.6;0.4;&#39;setosa&#39;\n&#34;,
- &#34;5.2;3.5;1.5;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5.2;3.4;1.4;0.2;&#39;setosa&#39;\n&#34;,
- &#34;4.7;3.2;1.6;0.2;&#39;setosa&#39;\n&#34;,
- &#34;4.8;3.1;1.6;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5.4;3.4;1.5;0.4;&#39;setosa&#39;\n&#34;,
- &#34;5.2;4.1;1.5;0.1;&#39;setosa&#39;\n&#34;,
- &#34;5.5;4.2;1.4;0.2;&#39;setosa&#39;\n&#34;,
- &#34;4.9;3.1;1.5;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5;3.2;1.2;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5.5;3.5;1.3;0.2;&#39;setosa&#39;\n&#34;,
- &#34;4.9;3.6;1.4;0.1;&#39;setosa&#39;\n&#34;,
- &#34;4.4;3;1.3;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5.1;3.4;1.5;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5;3.5;1.3;0.3;&#39;setosa&#39;\n&#34;,
- &#34;4.5;2.3;1.3;0.3;&#39;setosa&#39;\n&#34;,
- &#34;4.4;3.2;1.3;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5;3.5;1.6;0.6;&#39;setosa&#39;\n&#34;,
- &#34;5.1;3.8;1.9;0.4;&#39;setosa&#39;\n&#34;,
- &#34;4.8;3;1.4;0.3;&#39;setosa&#39;\n&#34;,
- &#34;5.1;3.8;1.6;0.2;&#39;setosa&#39;\n&#34;,
- &#34;4.6;3.2;1.4;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5.3;3.7;1.5;0.2;&#39;setosa&#39;\n&#34;,
- &#34;5;3.3;1.4;0.2;&#39;setosa&#39;\n&#34;,
- &#34;7;3.2;4.7;1.4;&#39;versicolor&#39;\n&#34;,
- &#34;6.4;3.2;4.5;1.5;&#39;versicolor&#39;\n&#34;,
- &#34;6.9;3.1;4.9;1.5;&#39;versicolor&#39;\n&#34;,
- &#34;5.5;2.3;4;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;6.5;2.8;4.6;1.5;&#39;versicolor&#39;\n&#34;,
- &#34;5.7;2.8;4.5;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;6.3;3.3;4.7;1.6;&#39;versicolor&#39;\n&#34;,
- &#34;4.9;2.4;3.3;1;&#39;versicolor&#39;\n&#34;,
- &#34;6.6;2.9;4.6;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;5.2;2.7;3.9;1.4;&#39;versicolor&#39;\n&#34;,
- &#34;5;2;3.5;1;&#39;versicolor&#39;\n&#34;,
- &#34;5.9;3;4.2;1.5;&#39;versicolor&#39;\n&#34;,
- &#34;6;2.2;4;1;&#39;versicolor&#39;\n&#34;,
- &#34;6.1;2.9;4.7;1.4;&#39;versicolor&#39;\n&#34;,
- &#34;5.6;2.9;3.6;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;6.7;3.1;4.4;1.4;&#39;versicolor&#39;\n&#34;,
- &#34;5.6;3;4.5;1.5;&#39;versicolor&#39;\n&#34;,
- &#34;5.8;2.7;4.1;1;&#39;versicolor&#39;\n&#34;,
- &#34;6.2;2.2;4.5;1.5;&#39;versicolor&#39;\n&#34;,
- &#34;5.6;2.5;3.9;1.1;&#39;versicolor&#39;\n&#34;,
- &#34;5.9;3.2;4.8;1.8;&#39;versicolor&#39;\n&#34;,
- &#34;6.1;2.8;4;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;6.3;2.5;4.9;1.5;&#39;versicolor&#39;\n&#34;,
- &#34;6.1;2.8;4.7;1.2;&#39;versicolor&#39;\n&#34;,
- &#34;6.4;2.9;4.3;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;6.6;3;4.4;1.4;&#39;versicolor&#39;\n&#34;,
- &#34;6.8;2.8;4.8;1.4;&#39;versicolor&#39;\n&#34;,
- &#34;6.7;3;5;1.7;&#39;versicolor&#39;\n&#34;,
- &#34;6;2.9;4.5;1.5;&#39;versicolor&#39;\n&#34;,
- &#34;5.7;2.6;3.5;1;&#39;versicolor&#39;\n&#34;,
- &#34;5.5;2.4;3.8;1.1;&#39;versicolor&#39;\n&#34;,
- &#34;5.5;2.4;3.7;1;&#39;versicolor&#39;\n&#34;,
- &#34;5.8;2.7;3.9;1.2;&#39;versicolor&#39;\n&#34;,
- &#34;6;2.7;5.1;1.6;&#39;versicolor&#39;\n&#34;,
- &#34;5.4;3;4.5;1.5;&#39;versicolor&#39;\n&#34;,
- &#34;6;3.4;4.5;1.6;&#39;versicolor&#39;\n&#34;,
- &#34;6.7;3.1;4.7;1.5;&#39;versicolor&#39;\n&#34;,
- &#34;6.3;2.3;4.4;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;5.6;3;4.1;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;5.5;2.5;4;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;5.5;2.6;4.4;1.2;&#39;versicolor&#39;\n&#34;,
- &#34;6.1;3;4.6;1.4;&#39;versicolor&#39;\n&#34;,
- &#34;5.8;2.6;4;1.2;&#39;versicolor&#39;\n&#34;,
- &#34;5;2.3;3.3;1;&#39;versicolor&#39;\n&#34;,
- &#34;5.6;2.7;4.2;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;5.7;3;4.2;1.2;&#39;versicolor&#39;\n&#34;,
- &#34;5.7;2.9;4.2;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;6.2;2.9;4.3;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;5.1;2.5;3;1.1;&#39;versicolor&#39;\n&#34;,
- &#34;5.7;2.8;4.1;1.3;&#39;versicolor&#39;\n&#34;,
- &#34;6.3;3.3;6;2.5;&#39;virginica&#39;\n&#34;,
- &#34;5.8;2.7;5.1;1.9;&#39;virginica&#39;\n&#34;,
- &#34;7.1;3;5.9;2.1;&#39;virginica&#39;\n&#34;,
- &#34;6.3;2.9;5.6;1.8;&#39;virginica&#39;\n&#34;,
- &#34;6.5;3;5.8;2.2;&#39;virginica&#39;\n&#34;,
- &#34;7.6;3;6.6;2.1;&#39;virginica&#39;\n&#34;,
- &#34;4.9;2.5;4.5;1.7;&#39;virginica&#39;\n&#34;,
- &#34;7.3;2.9;6.3;1.8;&#39;virginica&#39;\n&#34;,
- &#34;6.7;2.5;5.8;1.8;&#39;virginica&#39;\n&#34;,
- &#34;7.2;3.6;6.1;2.5;&#39;virginica&#39;\n&#34;,
- &#34;6.5;3.2;5.1;2;&#39;virginica&#39;\n&#34;,
- &#34;6.4;2.7;5.3;1.9;&#39;virginica&#39;\n&#34;,
- &#34;6.8;3;5.5;2.1;&#39;virginica&#39;\n&#34;,
- &#34;5.7;2.5;5;2;&#39;virginica&#39;\n&#34;,
- &#34;5.8;2.8;5.1;2.4;&#39;virginica&#39;\n&#34;,
- &#34;6.4;3.2;5.3;2.3;&#39;virginica&#39;\n&#34;,
- &#34;6.5;3;5.5;1.8;&#39;virginica&#39;\n&#34;,
- &#34;7.7;3.8;6.7;2.2;&#39;virginica&#39;\n&#34;,
- &#34;7.7;2.6;6.9;2.3;&#39;virginica&#39;\n&#34;,
- &#34;6;2.2;5;1.5;&#39;virginica&#39;\n&#34;,
- &#34;6.9;3.2;5.7;2.3;&#39;virginica&#39;\n&#34;,
- &#34;5.6;2.8;4.9;2;&#39;virginica&#39;\n&#34;,
- &#34;7.7;2.8;6.7;2;&#39;virginica&#39;\n&#34;,
- &#34;6.3;2.7;4.9;1.8;&#39;virginica&#39;\n&#34;,
- &#34;6.7;3.3;5.7;2.1;&#39;virginica&#39;\n&#34;,
- &#34;7.2;3.2;6;1.8;&#39;virginica&#39;\n&#34;,
- &#34;6.2;2.8;4.8;1.8;&#39;virginica&#39;\n&#34;,
- &#34;6.1;3;4.9;1.8;&#39;virginica&#39;\n&#34;,
- &#34;6.4;2.8;5.6;2.1;&#39;virginica&#39;\n&#34;,
- &#34;7.2;3;5.8;1.6;&#39;virginica&#39;\n&#34;,
- &#34;7.4;2.8;6.1;1.9;&#39;virginica&#39;\n&#34;,
- &#34;7.9;3.8;6.4;2;&#39;virginica&#39;\n&#34;,
- &#34;6.4;2.8;5.6;2.2;&#39;virginica&#39;\n&#34;,
- &#34;6.3;2.8;5.1;1.5;&#39;virginica&#39;\n&#34;,
- &#34;6.1;2.6;5.6;1.4;&#39;virginica&#39;\n&#34;,
- &#34;7.7;3;6.1;2.3;&#39;virginica&#39;\n&#34;,
- &#34;6.3;3.4;5.6;2.4;&#39;virginica&#39;\n&#34;,
- &#34;6.4;3.1;5.5;1.8;&#39;virginica&#39;\n&#34;,
- &#34;6;3;4.8;1.8;&#39;virginica&#39;\n&#34;,
- &#34;6.9;3.1;5.4;2.1;&#39;virginica&#39;\n&#34;,
- &#34;6.7;3.1;5.6;2.4;&#39;virginica&#39;\n&#34;,
- &#34;6.9;3.1;5.1;2.3;&#39;virginica&#39;\n&#34;,
- &#34;5.8;2.7;5.1;1.9;&#39;virginica&#39;\n&#34;,
- &#34;6.8;3.2;5.9;2.3;&#39;virginica&#39;\n&#34;,
- &#34;6.7;3.3;5.7;2.5;&#39;virginica&#39;\n&#34;,
- &#34;6.7;3;5.2;2.3;&#39;virginica&#39;\n&#34;,
- &#34;6.3;2.5;5;1.9;&#39;virginica&#39;\n&#34;,
- &#34;6.5;3;5.2;2;&#39;virginica&#39;\n&#34;,
- &#34;6.2;3.4;5.4;2.3;&#39;virginica&#39;\n&#34;,
- &#34;5.9;3;5.1;1.8;&#39;virginica&#39;\n&#34;]</pre>
+<pre>[&#39;&#34;Sepal Length&#34;\t&#34;Sepal Width&#34;\t&#34;Petal Length&#34;\t&#34;Petal Width&#34;\t&#34;Species&#34;\n&#39;,
+ &#39;5.1\t3.5\t1.4\t0.2\tsetosa\n&#39;,
+ &#39;4.9\t3\t1.4\t0.2\tsetosa\n&#39;,
+ &#39;4.7\t3.2\t1.3\t0.2\tsetosa\n&#39;,
+ &#39;4.6\t3.1\t1.5\t0.2\tsetosa\n&#39;]</pre>
 </div>
 
 </div>
@@ -11977,10 +11831,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lignes</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lignesBrutes</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lignes</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lignesBrutes</span><span class="p">]</span>
 <span class="n">lignes</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 
@@ -11994,13 +11848,13 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[2]:</div>
+<div class="prompt output_prompt">Out[15]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[[&#39;Sepal.Length&#39;, &#39;Sepal.Width&#39;, &#39;Petal.Length&#39;, &#39;Petal.Width&#39;, &#39;Species&#39;],
+<pre>[[&#39;Sepal Length&#39;, &#39;Sepal Width&#39;, &#39;Petal Length&#39;, &#39;Petal Width&#39;, &#39;Species&#39;],
  [&#39;5.1&#39;, &#39;3.5&#39;, &#39;1.4&#39;, &#39;0.2&#39;, &#39;setosa&#39;],
  [&#39;4.9&#39;, &#39;3&#39;, &#39;1.4&#39;, &#39;0.2&#39;, &#39;setosa&#39;],
  [&#39;4.7&#39;, &#39;3.2&#39;, &#39;1.3&#39;, &#39;0.2&#39;, &#39;setosa&#39;],
@@ -12032,7 +11886,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">enReel</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
@@ -12042,7 +11896,7 @@ div#notebook {
         <span class="n">res</span> <span class="o">=</span> <span class="n">v</span>
     <span class="k">finally</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">res</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">enReel</span><span class="p">(</span><span class="s2">&quot;1.234&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">enReel</span><span class="p">(</span><span class="s2">&quot;1.234&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">enReel</span><span class="p">(</span><span class="s2">&quot;setosa&quot;</span><span class="p">))</span>
 </pre></div>
 
@@ -12060,7 +11914,7 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>1.234
+<pre>2.234
 setosa
 </pre>
 </div>
@@ -12081,7 +11935,7 @@ setosa
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">lignes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -12097,13 +11951,13 @@ setosa
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[8]:</div>
+<div class="prompt output_prompt">Out[16]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;Sepal.Length&#39;, &#39;Sepal.Width&#39;, &#39;Petal.Length&#39;, &#39;Petal.Width&#39;, &#39;Species&#39;]</pre>
+<pre>[&#39;Sepal Length&#39;, &#39;Sepal Width&#39;, &#39;Petal Length&#39;, &#39;Petal Width&#39;, &#39;Species&#39;]</pre>
 </div>
 
 </div>
@@ -12123,7 +11977,7 @@ setosa
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">lignes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -12139,7 +11993,7 @@ setosa
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[9]:</div>
+<div class="prompt output_prompt">Out[17]:</div>
 
 
 
@@ -12165,7 +12019,7 @@ setosa
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">cle</span><span class="p">,</span> <span class="n">valeur</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lignes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lignes</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
@@ -12186,10 +12040,10 @@ setosa
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>cle = Sepal.Length 	; valeur = 5.1
-cle = Sepal.Width 	; valeur = 3.5
-cle = Petal.Length 	; valeur = 1.4
-cle = Petal.Width 	; valeur = 0.2
+<pre>cle = Sepal Length 	; valeur = 5.1
+cle = Sepal Width 	; valeur = 3.5
+cle = Petal Length 	; valeur = 1.4
+cle = Petal Width 	; valeur = 0.2
 cle = Species 	; valeur = setosa
 </pre>
 </div>
@@ -12201,7 +12055,7 @@ cle = Species 	; valeur = setosa
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="p">{</span><span class="n">cle</span><span class="p">:</span><span class="n">val</span> <span class="k">for</span> <span class="n">cle</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lignes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lignes</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
@@ -12217,16 +12071,16 @@ cle = Species 	; valeur = setosa
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[12]:</div>
+<div class="prompt output_prompt">Out[19]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;Petal.Length&#39;: &#39;1.4&#39;,
- &#39;Petal.Width&#39;: &#39;0.2&#39;,
- &#39;Sepal.Length&#39;: &#39;5.1&#39;,
- &#39;Sepal.Width&#39;: &#39;3.5&#39;,
+<pre>{&#39;Petal Length&#39;: &#39;1.4&#39;,
+ &#39;Petal Width&#39;: &#39;0.2&#39;,
+ &#39;Sepal Length&#39;: &#39;5.1&#39;,
+ &#39;Sepal Width&#39;: &#39;3.5&#39;,
  &#39;Species&#39;: &#39;setosa&#39;}</pre>
 </div>
 
@@ -12247,7 +12101,7 @@ cle = Species 	; valeur = setosa
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="p">{</span><span class="n">cle</span><span class="p">:</span><span class="n">enReel</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">cle</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lignes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lignes</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
@@ -12263,16 +12117,16 @@ cle = Species 	; valeur = setosa
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[13]:</div>
+<div class="prompt output_prompt">Out[20]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;Petal.Length&#39;: 1.4,
- &#39;Petal.Width&#39;: 0.2,
- &#39;Sepal.Length&#39;: 5.1,
- &#39;Sepal.Width&#39;: 3.5,
+<pre>{&#39;Petal Length&#39;: 1.4,
+ &#39;Petal Width&#39;: 0.2,
+ &#39;Sepal Length&#39;: 5.1,
+ &#39;Sepal Width&#39;: 3.5,
  &#39;Species&#39;: &#39;setosa&#39;}</pre>
 </div>
 
@@ -12293,7 +12147,7 @@ cle = Species 	; valeur = setosa
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="p">[]</span>
@@ -12315,26 +12169,26 @@ cle = Species 	; valeur = setosa
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[25]:</div>
+<div class="prompt output_prompt">Out[21]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[{&#39;Petal.Length&#39;: 1.4,
-  &#39;Petal.Width&#39;: 0.2,
-  &#39;Sepal.Length&#39;: 5.1,
-  &#39;Sepal.Width&#39;: 3.5,
+<pre>[{&#39;Petal Length&#39;: 1.4,
+  &#39;Petal Width&#39;: 0.2,
+  &#39;Sepal Length&#39;: 5.1,
+  &#39;Sepal Width&#39;: 3.5,
   &#39;Species&#39;: &#39;setosa&#39;},
- {&#39;Petal.Length&#39;: 1.4,
-  &#39;Petal.Width&#39;: 0.2,
-  &#39;Sepal.Length&#39;: 4.9,
-  &#39;Sepal.Width&#39;: 3.0,
+ {&#39;Petal Length&#39;: 1.4,
+  &#39;Petal Width&#39;: 0.2,
+  &#39;Sepal Length&#39;: 4.9,
+  &#39;Sepal Width&#39;: 3.0,
   &#39;Species&#39;: &#39;setosa&#39;},
- {&#39;Petal.Length&#39;: 1.3,
-  &#39;Petal.Width&#39;: 0.2,
-  &#39;Sepal.Length&#39;: 4.7,
-  &#39;Sepal.Width&#39;: 3.2,
+ {&#39;Petal Length&#39;: 1.3,
+  &#39;Petal Width&#39;: 0.2,
+  &#39;Sepal Length&#39;: 4.7,
+  &#39;Sepal Width&#39;: 3.2,
   &#39;Species&#39;: &#39;setosa&#39;}]</pre>
 </div>
 
@@ -12378,20 +12232,20 @@ cle = Species 	; valeur = setosa
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[{&#39;Petal.Length&#39;: 1.4,
-  &#39;Petal.Width&#39;: 0.2,
-  &#39;Sepal.Length&#39;: 5.1,
-  &#39;Sepal.Width&#39;: 3.5,
+<pre>[{&#39;Petal Length&#39;: 1.4,
+  &#39;Petal Width&#39;: 0.2,
+  &#39;Sepal Length&#39;: 5.1,
+  &#39;Sepal Width&#39;: 3.5,
   &#39;Species&#39;: &#39;setosa&#39;},
- {&#39;Petal.Length&#39;: 1.4,
-  &#39;Petal.Width&#39;: 0.2,
-  &#39;Sepal.Length&#39;: 4.9,
-  &#39;Sepal.Width&#39;: 3.0,
+ {&#39;Petal Length&#39;: 1.4,
+  &#39;Petal Width&#39;: 0.2,
+  &#39;Sepal Length&#39;: 4.9,
+  &#39;Sepal Width&#39;: 3.0,
   &#39;Species&#39;: &#39;setosa&#39;},
- {&#39;Petal.Length&#39;: 1.3,
-  &#39;Petal.Width&#39;: 0.2,
-  &#39;Sepal.Length&#39;: 4.7,
-  &#39;Sepal.Width&#39;: 3.2,
+ {&#39;Petal Length&#39;: 1.3,
+  &#39;Petal Width&#39;: 0.2,
+  &#39;Sepal Length&#39;: 4.7,
+  &#39;Sepal Width&#39;: 3.2,
   &#39;Species&#39;: &#39;setosa&#39;}]</pre>
 </div>
 
@@ -12412,14 +12266,12 @@ cle = Species 	; valeur = setosa
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">surface</span><span class="p">(</span><span class="n">ir</span><span class="p">):</span>
     <span class="n">ir</span> <span class="o">=</span> <span class="n">ir</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Petal.Surface&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Petal.Length&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Petal.Width&#39;</span><span class="p">]</span>
-    <span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Sepal.Surface&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Sepal.Length&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Sepal.Width&#39;</span><span class="p">]</span>
-    <span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Petal.Surface&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Sepal.Surface&#39;</span><span class="p">]</span>
+    <span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Petal Length&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Petal Width&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Sepal Length&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">ir</span><span class="p">[</span><span class="s1">&#39;Sepal Width&#39;</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">ir</span>
 <span class="n">irisSurface</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">iris</span><span class="p">))</span>
 <span class="n">irisSurface</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
@@ -12435,35 +12287,29 @@ cle = Species 	; valeur = setosa
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[27]:</div>
+<div class="prompt output_prompt">Out[25]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[{&#39;Petal.Length&#39;: 1.4,
-  &#39;Petal.Surface&#39;: 0.27999999999999997,
-  &#39;Petal.Width&#39;: 0.2,
+<pre>[{&#39;Petal Length&#39;: 1.4,
+  &#39;Petal Width&#39;: 0.2,
   &#39;Ratio&#39;: 0.01568627450980392,
-  &#39;Sepal.Length&#39;: 5.1,
-  &#39;Sepal.Surface&#39;: 17.849999999999998,
-  &#39;Sepal.Width&#39;: 3.5,
+  &#39;Sepal Length&#39;: 5.1,
+  &#39;Sepal Width&#39;: 3.5,
   &#39;Species&#39;: &#39;setosa&#39;},
- {&#39;Petal.Length&#39;: 1.4,
-  &#39;Petal.Surface&#39;: 0.27999999999999997,
-  &#39;Petal.Width&#39;: 0.2,
+ {&#39;Petal Length&#39;: 1.4,
+  &#39;Petal Width&#39;: 0.2,
   &#39;Ratio&#39;: 0.019047619047619046,
-  &#39;Sepal.Length&#39;: 4.9,
-  &#39;Sepal.Surface&#39;: 14.700000000000001,
-  &#39;Sepal.Width&#39;: 3.0,
+  &#39;Sepal Length&#39;: 4.9,
+  &#39;Sepal Width&#39;: 3.0,
   &#39;Species&#39;: &#39;setosa&#39;},
- {&#39;Petal.Length&#39;: 1.3,
-  &#39;Petal.Surface&#39;: 0.26,
-  &#39;Petal.Width&#39;: 0.2,
+ {&#39;Petal Length&#39;: 1.3,
+  &#39;Petal Width&#39;: 0.2,
   &#39;Ratio&#39;: 0.017287234042553192,
-  &#39;Sepal.Length&#39;: 4.7,
-  &#39;Sepal.Surface&#39;: 15.040000000000001,
-  &#39;Sepal.Width&#39;: 3.2,
+  &#39;Sepal Length&#39;: 4.7,
+  &#39;Sepal Width&#39;: 3.2,
   &#39;Species&#39;: &#39;setosa&#39;}]</pre>
 </div>
 
@@ -12483,7 +12329,7 @@ cle = Species 	; valeur = setosa
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">irisSetosa</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;Species&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;setosa&#39;</span><span class="p">,</span> <span class="n">irisSurface</span><span class="p">))</span>
@@ -12500,7 +12346,7 @@ cle = Species 	; valeur = setosa
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[28]:</div>
+<div class="prompt output_prompt">Out[27]:</div>
 
 
 
@@ -12525,13 +12371,13 @@ cle = Species 	; valeur = setosa
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sommeVariable</span><span class="p">(</span><span class="n">irA</span><span class="p">,</span> <span class="n">irB</span><span class="p">):</span>
     <span class="n">ir</span> <span class="o">=</span> <span class="n">irA</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">ir</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;Species&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Petal.Length&#39;</span><span class="p">,</span> <span class="s1">&#39;Petal.Width&#39;</span><span class="p">,</span> <span class="s1">&#39;Sepal.Length&#39;</span><span class="p">,</span> <span class="s1">&#39;Sepal.Width&#39;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Petal Length&#39;</span><span class="p">,</span> <span class="s1">&#39;Petal Width&#39;</span><span class="p">,</span> <span class="s1">&#39;Sepal Length&#39;</span><span class="p">,</span> <span class="s1">&#39;Sepal Width&#39;</span><span class="p">]:</span>
         <span class="n">ir</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">irA</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">+</span> <span class="n">irB</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">ir</span>
 
@@ -12550,16 +12396,16 @@ cle = Species 	; valeur = setosa
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[50]:</div>
+<div class="prompt output_prompt">Out[29]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;Petal.Length&#39;: 563.7000000000004,
- &#39;Petal.Width&#39;: 179.90000000000012,
- &#39;Sepal.Length&#39;: 876.5000000000002,
- &#39;Sepal.Width&#39;: 458.60000000000014}</pre>
+<pre>{&#39;Petal Length&#39;: 563.7000000000004,
+ &#39;Petal Width&#39;: 179.90000000000012,
+ &#39;Sepal Length&#39;: 876.5000000000002,
+ &#39;Sepal Width&#39;: 458.60000000000014}</pre>
 </div>
 
 </div>
@@ -12592,10 +12438,10 @@ cle = Species 	; valeur = setosa
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;Petal.Length&#39;: 3.76,
- &#39;Petal.Width&#39;: 1.2,
- &#39;Sepal.Length&#39;: 5.84,
- &#39;Sepal.Width&#39;: 3.06}</pre>
+<pre>{&#39;Petal Length&#39;: 3.76,
+ &#39;Petal Width&#39;: 1.2,
+ &#39;Sepal Length&#39;: 5.84,
+ &#39;Sepal Width&#39;: 3.06}</pre>
 </div>
 
 </div>
@@ -12608,21 +12454,18 @@ cle = Species 	; valeur = setosa
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="8.-Calculer-la-moyenne-de-chaque-variable-pour-chaque-esp&#232;ce.">8. Calculer la moyenne de chaque variable pour chaque esp&#232;ce.<a class="anchor-link" href="#8.-Calculer-la-moyenne-de-chaque-variable-pour-chaque-esp&#232;ce.">&#182;</a></h4>
+<h4 id="8.-Calculer-la-moyenne-de-chaque-variable-pour-chaque-esp&#232;ce.">8. Calculer la moyenne de chaque variable pour chaque esp&#232;ce.<a class="anchor-link" href="#8.-Calculer-la-moyenne-de-chaque-variable-pour-chaque-esp&#232;ce.">&#182;</a></h4><p>On recupère déjà la liste des espèces présentes dans la clé <code>Species</code>.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[77]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">especes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;Species&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">iris</span><span class="p">]))</span>
-<span class="n">groupes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;Species&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">s</span><span class="p">,</span> <span class="n">iris</span><span class="p">))</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">especes</span><span class="p">]</span>
-<span class="n">sommes</span> <span class="o">=</span> <span class="p">[</span><span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">sommeVariable</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groupes</span><span class="p">]</span>
-<span class="n">tailles</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groupes</span><span class="p">]</span>
-
-<span class="p">[{</span><span class="n">cle</span><span class="p">:(</span><span class="n">sommes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">cle</span><span class="p">]</span> <span class="o">/</span> <span class="n">tailles</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">cle</span> <span class="ow">in</span> <span class="n">sommes</span><span class="p">[</span><span class="n">i</span><span class="p">]}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">especes</span><span class="p">))]</span>
+<span class="n">especes</span>
 </pre></div>
 
 </div>
@@ -12635,24 +12478,265 @@ cle = Species 	; valeur = setosa
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[77]:</div>
+<div class="prompt output_prompt">Out[33]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[{&#39;Petal.Length&#39;: 1.4620000000000002,
-  &#39;Petal.Width&#39;: 0.2459999999999999,
-  &#39;Sepal.Length&#39;: 5.005999999999999,
-  &#39;Sepal.Width&#39;: 3.428000000000001},
- {&#39;Petal.Length&#39;: 4.26,
-  &#39;Petal.Width&#39;: 1.3259999999999998,
-  &#39;Sepal.Length&#39;: 5.936,
-  &#39;Sepal.Width&#39;: 2.7700000000000005},
- {&#39;Petal.Length&#39;: 5.552,
-  &#39;Petal.Width&#39;: 2.026,
-  &#39;Sepal.Length&#39;: 6.587999999999998,
-  &#39;Sepal.Width&#39;: 2.9739999999999998}]</pre>
+<pre>[&#39;setosa&#39;, &#39;virginica&#39;, &#39;versicolor&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ensuite, on créé autant de listes que d'espèces présentes, regroupées dans une même liste.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">groupes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;Species&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">s</span><span class="p">,</span> <span class="n">iris</span><span class="p">))</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">especes</span><span class="p">]</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">groupes</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[35]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>3</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Puis, on applique sur chaque sous-liste correspondant à une espèce la même procédure que pour le calcul de la moyenne globale.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sommes</span> <span class="o">=</span> <span class="p">[</span><span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">sommeVariable</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groupes</span><span class="p">]</span>
+<span class="n">sommes</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[36]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[{&#39;Petal Length&#39;: 73.10000000000001,
+  &#39;Petal Width&#39;: 12.299999999999995,
+  &#39;Sepal Length&#39;: 250.29999999999998,
+  &#39;Sepal Width&#39;: 171.40000000000003},
+ {&#39;Petal Length&#39;: 277.59999999999997,
+  &#39;Petal Width&#39;: 101.29999999999998,
+  &#39;Sepal Length&#39;: 329.3999999999999,
+  &#39;Sepal Width&#39;: 148.7},
+ {&#39;Petal Length&#39;: 212.99999999999997,
+  &#39;Petal Width&#39;: 66.3,
+  &#39;Sepal Length&#39;: 296.8,
+  &#39;Sepal Width&#39;: 138.50000000000003}]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>On peut simplement calculer les tailles de chaque groupe de cette manière.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tailles</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groupes</span><span class="p">]</span>
+<span class="n">tailles</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[38]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[50, 50, 50]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Enfin, il est facile d'appliquer aussi la même méthode pour avoir les moyennes par espèces.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">moyennes</span> <span class="o">=</span> <span class="p">[{</span><span class="n">cle</span><span class="p">:</span><span class="nb">round</span><span class="p">(</span><span class="n">sommes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">cle</span><span class="p">]</span> <span class="o">/</span> <span class="n">tailles</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">cle</span> <span class="ow">in</span> <span class="n">sommes</span><span class="p">[</span><span class="n">i</span><span class="p">]}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">especes</span><span class="p">))]</span>
+<span class="n">moyennes</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[40]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[{&#39;Petal Length&#39;: 1.46,
+  &#39;Petal Width&#39;: 0.25,
+  &#39;Sepal Length&#39;: 5.01,
+  &#39;Sepal Width&#39;: 3.43},
+ {&#39;Petal Length&#39;: 5.55,
+  &#39;Petal Width&#39;: 2.03,
+  &#39;Sepal Length&#39;: 6.59,
+  &#39;Sepal Width&#39;: 2.97},
+ {&#39;Petal Length&#39;: 4.26,
+  &#39;Petal Width&#39;: 1.33,
+  &#39;Sepal Length&#39;: 5.94,
+  &#39;Sepal Width&#39;: 2.77}]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Au final, pour que ce soit plus clair, on ajoute l'espèce à chaque résultat.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">moyennes</span><span class="p">):</span>
+    <span class="n">m</span><span class="p">[</span><span class="s2">&quot;Species&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">especes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="n">moyennes</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[44]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[{&#39;Petal Length&#39;: 1.46,
+  &#39;Petal Width&#39;: 0.25,
+  &#39;Sepal Length&#39;: 5.01,
+  &#39;Sepal Width&#39;: 3.43,
+  &#39;Species&#39;: &#39;setosa&#39;},
+ {&#39;Petal Length&#39;: 5.55,
+  &#39;Petal Width&#39;: 2.03,
+  &#39;Sepal Length&#39;: 6.59,
+  &#39;Sepal Width&#39;: 2.97,
+  &#39;Species&#39;: &#39;virginica&#39;},
+ {&#39;Petal Length&#39;: 4.26,
+  &#39;Petal Width&#39;: 1.33,
+  &#39;Sepal Length&#39;: 5.94,
+  &#39;Sepal Width&#39;: 2.77,
+  &#39;Species&#39;: &#39;versicolor&#39;}]</pre>
 </div>
 
 </div>

@@ -11,6 +11,7 @@ title: Analyse de Données Massives
     - [TP2 - MapReduce sur MongoDB](analyse-donnees-massives-tp2)
         - [correction](analyse-donnees-massives-tp2-correction)
 1. [TP3 - Introduction à `Python`](analyse-donnees-massives-tp3.html)
+    - [correction](analyse-donnees-massives-tp3-correction.html)
 1. [TP4 - Statistiques sous `Python`](analyse-donnees-massives-tp4.html)
 1. [TP5 - Visualisation sous `Python`](analyse-donnees-massives-tp5.html)
 1. [TP6 - Analyse de données avec `Python`](analyse-donnees-massives-tp6.html)
