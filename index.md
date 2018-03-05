@@ -9,6 +9,7 @@ title: Enseignement
     - [Exploitation de données](exploitation-donnees)
 - DUT STID 2ème année (en alternance)
     - [Analyse de données](analyse-donnees/)
+    - [Travaux de fin d'études](tfe)
 - LP Santé
     - [R avancé](info-dec-sante/)
 - LP Data-Mining
