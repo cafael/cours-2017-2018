@@ -15,6 +15,7 @@ title: Analyse de Données Massives
 1. [TP4 - Statistiques sous `Python`](analyse-donnees-massives-tp4.html)
     - [correction](analyse-donnees-massives-tp4-correction.html)
 1. [TP5 - Visualisation sous `Python`](analyse-donnees-massives-tp5.html)
+    - [correction](analyse-donnees-massives-tp5-correction.html)
 1. [TP6 - Analyse de données avec `Python`](analyse-donnees-massives-tp6.html)
 1. [TP7 - Connexion à *MongoDB* sous `python`](analyse-donnees-massives-tp7.html)
 1. [TP8 - Données du projet](analyse-donnees-massives-tp8.html)
