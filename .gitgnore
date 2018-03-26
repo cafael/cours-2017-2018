@@ -1,0 +1,6 @@
+# Ignore checkpoints created (especially for the examples)
+.ipynb_checkpoints
+
+# Ignore R history et data
+.RData
+.Rhistory
