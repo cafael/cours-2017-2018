@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>analyse-donnees-massives-tp7-correction</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>analyse-donnees-massives-tp9</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11775,7 +11775,61 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="TP7---Connexion-&#224;-MongoDB-sous-Python">TP7 - Connexion &#224; MongoDB sous <code>Python</code><a class="anchor-link" href="#TP7---Connexion-&#224;-MongoDB-sous-Python">&#182;</a></h1><h4 id="Analyse-de-Donn&#233;es-Massives---Master-1&#232;re-ann&#233;e">Analyse de Donn&#233;es Massives - Master 1&#232;re ann&#233;e<a class="anchor-link" href="#Analyse-de-Donn&#233;es-Massives---Master-1&#232;re-ann&#233;e">&#182;</a></h4><p>On utilise dans ce <em>notebook</em> les modules <code>pymongo</code>, <code>pandas</code> et <code>pprint</code>.</p>
+<h1 id="TP9---Donn&#233;es-du-projet">TP9 - Donn&#233;es du projet<a class="anchor-link" href="#TP9---Donn&#233;es-du-projet">&#182;</a></h1><h4 id="Analyse-de-Donn&#233;es-Massives---Master-1&#232;re-ann&#233;e">Analyse de Donn&#233;es Massives - Master 1&#232;re ann&#233;e<a class="anchor-link" href="#Analyse-de-Donn&#233;es-Massives---Master-1&#232;re-ann&#233;e">&#182;</a></h4><p>Nous allons découvrir dans ce TP les <a href="https://opendata.paris.fr/explore/dataset/horodateurs-transactions-de-paiement/">données utilisées</a> dans le projet à rendre, qui sont l'ensemble des <strong>transactions sur les horodateurs dans la ville de Paris</strong> sur l'année 2014. Celles-ci proviennent du site <a href="https://opendata.paris.fr">Open Data Paris</a>, répertoire des donées ouvertes de la ville de Paris. Elles sont stockées sur le serveur <em>MongoDB</em> déjà utilisé, dans la base <code>horodateurs</code>.</p>
+<p>Elle contient deux collections principales :</p>
+<ul>
+<li><code>transactions</code> : ensemble des paiements</li>
+<li><code>mobiliers</code>: liste de tous les horodateurs</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pymongo</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="n">pprint</span>
+
+<span class="n">con</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">(</span><span class="s2">&quot;mongodb://193.51.82.104:2343/&quot;</span><span class="p">)</span>
+
+<span class="n">horo</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">horodateurs</span>
+<span class="n">horo</span><span class="o">.</span><span class="n">collection_names</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;transactions_small&#39;, &#39;myresults&#39;, &#39;transactions&#39;, &#39;mobiliers&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Taille-des-donn&#233;es">Taille des donn&#233;es<a class="anchor-link" href="#Taille-des-donn&#233;es">&#182;</a></h2><p>Il y a un grand nombre de transactions stockées dans la base (plus de 24 millions - cf ci-dessous).</p>
 
 </div>
 </div>
@@ -11785,12 +11839,30 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pymongo</span>
-<span class="kn">import</span> <span class="nn">pandas</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">horo</span><span class="o">.</span><span class="n">transactions</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[2]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>24448030</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -11799,7 +11871,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>On créé ensuite la connexion vers <em>MongoDB</em>. Et on vérifie que la base <code>test</code> contient bien la collection <code>restaurants</code>.</p>
+<p>Nous disposons d'un échantillon réduit de transactions (1%) permettant de tester rapidement le code qu'on ouhaite exécuter (plutôt que de lancer un code erroné ou trop lourd sur l'ensemble des données).</p>
 
 </div>
 </div>
@@ -11809,8 +11881,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">con</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">(</span><span class="s2">&quot;mongodb://193.51.82.104:2343/&quot;</span><span class="p">)</span>
-<span class="n">con</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">collection_names</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">horo</span><span class="o">.</span><span class="n">transactions_small</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -11829,7 +11900,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;restaurants&#39;, &#39;test&#39;]</pre>
+<pre>244480</pre>
 </div>
 
 </div>
@@ -11837,13 +11908,22 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Nous disposons aussi de la liste des mobiliers, c'est-à-dire des horodateurs de la ville de Paris.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">con</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">restaurants</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">limit</span> <span class="o">=</span> <span class="mi">1</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">horo</span><span class="o">.</span><span class="n">mobiliers</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -11862,22 +11942,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[{&#39;_id&#39;: ObjectId(&#39;58ac16d1a251358ee4ee87dd&#39;),
-  &#39;address&#39;: {&#39;building&#39;: &#39;1007&#39;,
-   &#39;coord&#39;: [-73.856077, 40.848447],
-   &#39;street&#39;: &#39;Morris Park Ave&#39;,
-   &#39;zipcode&#39;: &#39;10462&#39;},
-  &#39;borough&#39;: &#39;Bronx&#39;,
-  &#39;cuisine&#39;: &#39;Bakery&#39;,
-  &#39;grades&#39;: [{&#39;date&#39;: datetime.datetime(2014, 3, 3, 0, 0),
-    &#39;grade&#39;: &#39;A&#39;,
-    &#39;score&#39;: 2},
-   {&#39;date&#39;: datetime.datetime(2013, 9, 11, 0, 0), &#39;grade&#39;: &#39;A&#39;, &#39;score&#39;: 6},
-   {&#39;date&#39;: datetime.datetime(2013, 1, 24, 0, 0), &#39;grade&#39;: &#39;A&#39;, &#39;score&#39;: 10},
-   {&#39;date&#39;: datetime.datetime(2011, 11, 23, 0, 0), &#39;grade&#39;: &#39;A&#39;, &#39;score&#39;: 9},
-   {&#39;date&#39;: datetime.datetime(2011, 3, 10, 0, 0), &#39;grade&#39;: &#39;B&#39;, &#39;score&#39;: 14}],
-  &#39;name&#39;: &#39;Morris Park Bake Shop&#39;,
-  &#39;restaurant_id&#39;: &#39;30075445&#39;}]</pre>
+<pre>7810</pre>
 </div>
 
 </div>
@@ -11890,7 +11955,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>On va aussi utiliser ici la fonction <code>affiche()</code> créée dans le TP pour améliorer la lisibilité de l'affichage des résultats.</p>
+<p>Pour avoir une estimation de la taille des données, nous récupérons l'ensemble des transactions de l'échantillon réduit dans un <code>DataFrame</code>.</p>
 
 </div>
 </div>
@@ -11900,9 +11965,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">affiche</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-        <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">trans_small</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">horo</span><span class="o">.</span><span class="n">transactions_small</span><span class="o">.</span><span class="n">find</span><span class="p">()))</span>
 </pre></div>
 
 </div>
@@ -11914,8 +11977,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exercices">Exercices<a class="anchor-link" href="#Exercices">&#182;</a></h2><p>Nous allons utiliser la base de données <code>test</code>, dans laquelle se trouve la collection <code>restaurants</code>. Celle-ci est composée de plus de 25000 retaurants new-yorkais, avec des évaluations de ceux-ci.</p>
-<h3 id="1.-Cr&#233;er-une-connexion-vers-cette-collection">1. Cr&#233;er une connexion vers cette collection<a class="anchor-link" href="#1.-Cr&#233;er-une-connexion-vers-cette-collection">&#182;</a></h3><p>On peut complétement simplfier l'écriture des requêtes à suivre en faisant la connexion directement avec la collection <code>restaurants</code>.</p>
+<p>Il est maintenant possible de connaître la taille des données grâce à l'objet <code>values.nbytes</code> du <code>DataFrame</code> créé.</p>
 
 </div>
 </div>
@@ -11925,10 +11987,28 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">db</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">restaurants</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">trans_small</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">nbytes</span><span class="p">)</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>17602560
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -11937,7 +12017,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="2.-D&#233;terminer-le-nombre-exact-de-restaurants.">2. D&#233;terminer le nombre exact de restaurants.<a class="anchor-link" href="#2.-D&#233;terminer-le-nombre-exact-de-restaurants.">&#182;</a></h3><p>Un simple dénombrement est à faire ici.</p>
+<p>L'objet finalement obtenu a donc une taille de presque 17 Mo (cf calcul ci-dessous).</p>
 
 </div>
 </div>
@@ -11947,7 +12027,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">trans_small</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span> <span class="c1"># En Mo</span>
 </pre></div>
 
 </div>
@@ -11966,7 +12046,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>25359</pre>
+<pre>16.787109375</pre>
 </div>
 
 </div>
@@ -11979,7 +12059,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="3.-Lister-les-diff&#233;rents-quartiers-repr&#233;sent&#233;s-(borough)-ainsi-que-les-diff&#233;rents-types-de--cuisine-(cuisine).">3. Lister les diff&#233;rents quartiers repr&#233;sent&#233;s (<em>borough</em>) ainsi que les diff&#233;rents types de  cuisine (<em>cuisine</em>).<a class="anchor-link" href="#3.-Lister-les-diff&#233;rents-quartiers-repr&#233;sent&#233;s-(borough)-ainsi-que-les-diff&#233;rents-types-de--cuisine-(cuisine).">&#182;</a></h3><p>On utilise la fonction <code>distinct()</code> ici pour lister les différentes valeurs de <code>borough</code>. On remarque que pour certains restaurants le quartier n'est pas connu.</p>
+<p>Une rapide estimation pour la totalité (grâce à une règle de trois) nous permet de voir que l'objet final contenant les transactions sur toute l'année (sans pré-calcul dans <em>MongoDB</em>) aurait une taille de plus de 1.6 Go. Il va donc falloir faire attention aux calculs que l'on va lancer, et aux choix de récupération de données qu'on va faire.</p>
 
 </div>
 </div>
@@ -11989,7 +12069,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">distinct</span><span class="p">(</span><span class="s2">&quot;borough&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">trans_small</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">horo</span><span class="o">.</span><span class="n">transactions</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">/</span> <span class="n">horo</span><span class="o">.</span><span class="n">transactions_small</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
 </pre></div>
 
 </div>
@@ -12008,7 +12088,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;Bronx&#39;, &#39;Brooklyn&#39;, &#39;Manhattan&#39;, &#39;Queens&#39;, &#39;Staten Island&#39;, &#39;Missing&#39;]</pre>
+<pre>1678.7129974365234</pre>
 </div>
 
 </div>
@@ -12021,7 +12101,8 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Idem pour lister les (nombreux) différents types de cuisine. On stocke le résultat dans une variable pour dénombrer les styles (<code>85</code>). Et nous n'affichons que les 10 premiers pour exemple.</p>
+<h2 id="Contenu-des-donn&#233;es">Contenu des donn&#233;es<a class="anchor-link" href="#Contenu-des-donn&#233;es">&#182;</a></h2><p>Afin de mieux comprendre les données, nous affichons le premier document de chaque collection.</p>
+<p>Pour les transactions, nous avons les informations présentées dans le fichier PDF joint avec les données (cf lien au début du TP). On a en particulier le numéro de l'horodateur dans l'item <code>horodateur</code>. Celui-ci nous permettra de faire le lien avec l'autre collection.</p>
 
 </div>
 </div>
@@ -12031,8 +12112,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">type_cuisine</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">distinct</span><span class="p">(</span><span class="s2">&quot;cuisine&quot;</span><span class="p">)</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">type_cuisine</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pprint</span><span class="p">(</span><span class="n">horo</span><span class="o">.</span><span class="n">transactions</span><span class="o">.</span><span class="n">find_one</span><span class="p">())</span>
 </pre></div>
 
 </div>
@@ -12045,27 +12125,42 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[9]:</div>
+<div class="prompt"></div>
 
 
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>85</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{&#39;_id&#39;: ObjectId(&#39;56eaa8279fae0d71f77ea2bd&#39;),
+ &#39;date horodateur&#39;: datetime.datetime(2014, 1, 9, 14, 9, 47),
+ &#39;durée payée (h)&#39;: 0.5,
+ &#39;début stationnement&#39;: datetime.datetime(2014, 1, 9, 14, 9, 47),
+ &#39;fin stationnement&#39;: datetime.datetime(2014, 1, 9, 14, 39, 47),
+ &#39;horodateur&#39;: 1050,
+ &#39;montant carte&#39;: 1.8,
+ &#39;moyen de paiement&#39;: &#39;Paris Carte&#39;,
+ &#39;usager&#39;: &#39;Rotatif&#39;}
+</pre>
+</div>
 </div>
 
 </div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Dans la collection <code>mobiliers</code>, nous avons plusieurs informations (à voir aussi dans le PD joint sur <a href="https://opendata.paris.fr/explore/dataset/horodateurs-mobiliers/information/">cette page</a>). On dispose bien évidemment du numéro d'horodateurs (avec l'attribut <code>numhoro</code>), mais aussi de la localisation géographique de l'horodateur (sous différents formats, permettant leur utilisation de plusieurs façons).</p>
 
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">type_cuisine</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pprint</span><span class="p">(</span><span class="n">horo</span><span class="o">.</span><span class="n">mobiliers</span><span class="o">.</span><span class="n">find_one</span><span class="p">())</span>
 </pre></div>
 
 </div>
@@ -12078,70 +12173,32 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[10]:</div>
+<div class="prompt"></div>
 
 
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[&#39;Bakery&#39;,
- &#39;Hamburgers&#39;,
- &#39;Irish&#39;,
- &#39;American&#39;,
- &#39;Jewish/Kosher&#39;,
- &#39;Delicatessen&#39;,
- &#39;Ice Cream, Gelato, Yogurt, Ices&#39;,
- &#39;Chinese&#39;,
- &#39;Chicken&#39;,
- &#39;Turkish&#39;]</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{&#39;_id&#39;: ObjectId(&#39;56eaa4552d7eb34e4432e0fb&#39;),
+ &#39;datasetid&#39;: &#39;horodateurs-mobiliers&#39;,
+ &#39;fields&#39;: {&#39;adresse&#39;: &#39;48 vis-à-vis RUE DE LISBONNE&#39;,
+            &#39;alim&#39;: &#39;SOLAIRE&#39;,
+            &#39;arrondt&#39;: 8,
+            &#39;geo_point_2d&#39;: [48.877489999731374, 2.311394999713242],
+            &#39;geo_shape&#39;: {&#39;coordinates&#39;: [2.311394999713242,
+                                          48.877489999731374],
+                          &#39;type&#39;: &#39;Point&#39;},
+            &#39;modele&#39;: &#39;SAB3&#39;,
+            &#39;numhoro&#39;: 57080603,
+            &#39;objectid&#39;: 4383,
+            &#39;regime&#39;: &#39;MIX&#39;,
+            &#39;tarif&#39;: &#39;4,00 E MIX 2U&#39;,
+            &#39;tarifhor&#39;: 4.0,
+            &#39;zoneres&#39;: &#39;8J&#39;},
+ &#39;geometry&#39;: {&#39;coordinates&#39;: [2.311394999713242, 48.877489999731374],
+              &#39;type&#39;: &#39;Point&#39;},
+ &#39;record_timestamp&#39;: &#39;2015-12-02T17:49:46+00:00&#39;,
+ &#39;recordid&#39;: &#39;698c75a21ba4f4c34e72f32ea1ecd94f9de8b88c&#39;}
+</pre>
 </div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="4.-Lister-les-noms-des-restaurants,-ainsi-que-leur-quartier,-ne-proposant-que-des-soupes-(cuisine-&#233;gale-&#224;-Soups).">4. Lister les noms des restaurants, ainsi que leur quartier, ne proposant que des soupes (<em>cuisine</em> &#233;gale &#224; <em>Soups</em>).<a class="anchor-link" href="#4.-Lister-les-noms-des-restaurants,-ainsi-que-leur-quartier,-ne-proposant-que-des-soupes-(cuisine-&#233;gale-&#224;-Soups).">&#182;</a></h3><p>C'est la fonction <code>find()</code> qui nous permet de récupérer ces informations (4 restaurants).</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">find</span><span class="p">({</span> <span class="s2">&quot;cuisine&quot;</span><span class="p">:</span> <span class="s2">&quot;Soups&quot;</span> <span class="p">},</span> <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;borough&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
-<span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[14]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[{&#39;borough&#39;: &#39;Manhattan&#39;, &#39;name&#39;: &#39;Wichcraft Express&#39;},
- {&#39;borough&#39;: &#39;Staten Island&#39;, &#39;name&#39;: &#39;Original Soupman Of Staten Island&#39;},
- {&#39;borough&#39;: &#39;Manhattan&#39;, &#39;name&#39;: &#39;The Original Soupman&#39;},
- {&#39;borough&#39;: &#39;Manhattan&#39;, &#39;name&#39;: &#39;Peasant Stock&#39;}]</pre>
-</div>
-
 </div>
 
 </div>
@@ -12152,161 +12209,50 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="5.-Donner-le-nombre-de-restaurants-ayant-eu-au-moins-une-fois-le-grade-(dans-grades)-Z.">5. Donner le nombre de restaurants ayant eu au moins une fois le <em>grade</em> (dans <em>grades</em>) <code>Z</code>.<a class="anchor-link" href="#5.-Donner-le-nombre-de-restaurants-ayant-eu-au-moins-une-fois-le-grade-(dans-grades)-Z.">&#182;</a></h3><p>Pour cela, nous pouvons déjà nous retreindre aux restaurants ayant eu le <em>grade</em> <code>Z</code>, puis nous comptons la taille du résultat avec <code>count()</code>.</p>
+<h2 id="A-Faire">A Faire<a class="anchor-link" href="#A-Faire">&#182;</a></h2><p>Cette première partie à faire vous permettra de vous familariser avec les données.</p>
+<h3 id="Mobiliers">Mobiliers<a class="anchor-link" href="#Mobiliers">&#182;</a></h3><ol>
+<li>Donner les différents types d'alimentation possible (<code>alim</code>) et le nombre d'horodateurs pour chaque. </li>
+<li>Donner le nombre de mobiliers pour chaque arrondissement (<code>arrondt</code>)</li>
+<li>Lister l'ensemble des modèles existants (<code>modele</code>)</li>
+<li>Croiser le régime (<code>regime</code>) et les arrondissements pour voir s'il y a des différences notables</li>
+<li>Idem avec le tarif horaire (<code>tarifhor</code>)</li>
+</ol>
+<h3 id="Transactions">Transactions<a class="anchor-link" href="#Transactions">&#182;</a></h3><ol>
+<li>Donner la distribution des montants payés (<code>montant carte</code>) et des durées payées (<code>durée payée (h)</code>)</li>
+<li>Lister les différents moyens de paiements utilisés (<code>moyen de paiement</code>) et le type d'usager (<code>usager</code>), en ordonnant chaque table résultat par ordre décroissant du nombre de paiements</li>
+<li>Déterminer s'il existe un lien entre le moyen de paiement, et le montant d'une part et la durée d'autre part</li>
+</ol>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">find</span><span class="p">({</span> <span class="s2">&quot;grades.grade&quot;</span><span class="p">:</span> <span class="s2">&quot;Z&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[15]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>1337</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="6.-Calculer-le-nombre-de-restaurants-pour-chaque-quartier">6. Calculer le nombre de restaurants pour chaque quartier<a class="anchor-link" href="#6.-Calculer-le-nombre-de-restaurants-pour-chaque-quartier">&#182;</a></h3><p>Ici, un aggrégat basique est à faire, avec <code>aggregate()</code>. La plupart sont dans <em>Manhattan</em>, mais on remarque aussi qu'on a 51 restaurants sans quartier connu.</p>
+<h2 id="Jointure-entre-collections">Jointure entre collections<a class="anchor-link" href="#Jointure-entre-collections">&#182;</a></h2><p>Il est possible de réaliser une jointure entre deux collections, dans un aggrégat, avec l'opérateur <code>$lookup</code>.</p>
+<p>Ci-dessous, nous nous restreignons aux transactions de l'horodateur <code>57080603</code>. Ensuite, nous récupérons les informations de celui-ci dans l'autre collection (indiquée dans le <code>from</code>), via la jointure avec <code>$lookup</code>. L'attribut <code>localField</code> indique l'attribut à prendre dans la collection en cours et <code>foreignField</code> l'attribut à prendre dans la collection indiquée dans le <code>from</code>. La liste des mobiliers correspondants (1 seul normalement ici) est retournée dans un <code>array</code> nommé via le <code>as</code>. Ensuite, nous nous limitons aux 5 premiers résultats pour ne pas alourdir l'affichage.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span> <span class="p">{</span> <span class="s2">&quot;$group&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;$borough&quot;</span><span class="p">,</span> <span class="s2">&quot;nb&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;$sum&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">}</span> <span class="p">}</span> <span class="p">])</span>
-<span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">))</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;Quartier&quot;</span><span class="p">,</span> <span class="s2">&quot;nb&quot;</span><span class="p">:</span> <span class="s2">&quot;Nb restaurants&quot;</span><span class="p">})</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[18]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Quartier</th>
-      <th>Nb restaurants</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Missing</td>
-      <td>51</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Staten Island</td>
-      <td>969</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Brooklyn</td>
-      <td>6086</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Bronx</td>
-      <td>2338</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Queens</td>
-      <td>5656</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Manhattan</td>
-      <td>10259</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="7.-Donner-les-cinq-types-de-cuisine-les-plus-pr&#233;sentes-dans-New-York-(avec-le-plus-de-restaurants-donc)">7. Donner les cinq types de cuisine les plus pr&#233;sentes dans New-York (avec le plus de restaurants donc)<a class="anchor-link" href="#7.-Donner-les-cinq-types-de-cuisine-les-plus-pr&#233;sentes-dans-New-York-(avec-le-plus-de-restaurants-donc)">&#182;</a></h3><p>En plus d'un calcul d'aggrégat avec <code>$group</code>, on tri le résultat par ordre décroissant sur le nombre et on se limite aux 5 premières valeurs avec <code>$limit</code>.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span> 
-    <span class="p">{</span> <span class="s2">&quot;$group&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;$cuisine&quot;</span> <span class="p">,</span> <span class="s2">&quot;nb&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;$sum&quot;</span> <span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">}</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="s2">&quot;$sort&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;nb&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span> <span class="p">}</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="s2">&quot;$limit&quot;</span> <span class="p">:</span> <span class="mi">5</span> <span class="p">}</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">horo</span><span class="o">.</span><span class="n">transactions_small</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span>
+    <span class="p">{</span> <span class="s2">&quot;$match&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;horodateur&quot;</span><span class="p">:</span> <span class="mi">57080603</span><span class="p">}},</span>
+    <span class="p">{</span> <span class="s2">&quot;$lookup&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;from&quot;</span><span class="p">:</span> <span class="s2">&quot;mobiliers&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;localField&quot;</span><span class="p">:</span> <span class="s2">&quot;horodateur&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;foreignField&quot;</span><span class="p">:</span> <span class="s2">&quot;fields.numhoro&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;as&quot;</span><span class="p">:</span> <span class="s2">&quot;mobilier&quot;</span>
+    <span class="p">}},</span>
+    <span class="p">{</span> <span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
 <span class="p">])</span>
-<span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">))</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;Cuisine&quot;</span><span class="p">,</span> <span class="s2">&quot;nb&quot;</span><span class="p">:</span> <span class="s2">&quot;Nb restaurants&quot;</span><span class="p">})</span>
+<span class="n">liste</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">liste</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12319,64 +12265,167 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[19]:</div>
+<div class="prompt"></div>
 
 
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Cuisine</th>
-      <th>Nb restaurants</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>American</td>
-      <td>6183</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Chinese</td>
-      <td>2418</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Café/Coffee/Tea</td>
-      <td>1214</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Pizza</td>
-      <td>1163</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Italian</td>
-      <td>1069</td>
-    </tr>
-  </tbody>
-</table>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[{&#39;_id&#39;: ObjectId(&#39;56eaa9ef9fae0d71f74ec333&#39;),
+  &#39;date horodateur&#39;: datetime.datetime(2014, 7, 10, 12, 27, 33),
+  &#39;durée payée (h)&#39;: 1.75,
+  &#39;début stationnement&#39;: datetime.datetime(2014, 7, 10, 12, 27, 33),
+  &#39;fin stationnement&#39;: datetime.datetime(2014, 7, 10, 14, 12, 33),
+  &#39;horodateur&#39;: 57080603,
+  &#39;mobilier&#39;: [{&#39;_id&#39;: ObjectId(&#39;56eaa4552d7eb34e4432e0fb&#39;),
+                &#39;datasetid&#39;: &#39;horodateurs-mobiliers&#39;,
+                &#39;fields&#39;: {&#39;adresse&#39;: &#39;48 vis-à-vis RUE DE LISBONNE&#39;,
+                           &#39;alim&#39;: &#39;SOLAIRE&#39;,
+                           &#39;arrondt&#39;: 8,
+                           &#39;geo_point_2d&#39;: [48.877489999731374,
+                                            2.311394999713242],
+                           &#39;geo_shape&#39;: {&#39;coordinates&#39;: [2.311394999713242,
+                                                         48.877489999731374],
+                                         &#39;type&#39;: &#39;Point&#39;},
+                           &#39;modele&#39;: &#39;SAB3&#39;,
+                           &#39;numhoro&#39;: 57080603,
+                           &#39;objectid&#39;: 4383,
+                           &#39;regime&#39;: &#39;MIX&#39;,
+                           &#39;tarif&#39;: &#39;4,00 E MIX 2U&#39;,
+                           &#39;tarifhor&#39;: 4.0,
+                           &#39;zoneres&#39;: &#39;8J&#39;},
+                &#39;geometry&#39;: {&#39;coordinates&#39;: [2.311394999713242,
+                                             48.877489999731374],
+                             &#39;type&#39;: &#39;Point&#39;},
+                &#39;record_timestamp&#39;: &#39;2015-12-02T17:49:46+00:00&#39;,
+                &#39;recordid&#39;: &#39;698c75a21ba4f4c34e72f32ea1ecd94f9de8b88c&#39;}],
+  &#39;montant carte&#39;: 4.2,
+  &#39;moyen de paiement&#39;: &#39;CB&#39;,
+  &#39;usager&#39;: &#39;Rotatif&#39;},
+ {&#39;_id&#39;: ObjectId(&#39;56eaa9a19fae0d71f72c07b9&#39;),
+  &#39;date horodateur&#39;: datetime.datetime(2014, 6, 2, 14, 2, 1),
+  &#39;durée payée (h)&#39;: 1.0,
+  &#39;début stationnement&#39;: datetime.datetime(2014, 6, 2, 14, 2, 1),
+  &#39;fin stationnement&#39;: datetime.datetime(2014, 6, 2, 15, 2, 1),
+  &#39;horodateur&#39;: 57080603,
+  &#39;mobilier&#39;: [{&#39;_id&#39;: ObjectId(&#39;56eaa4552d7eb34e4432e0fb&#39;),
+                &#39;datasetid&#39;: &#39;horodateurs-mobiliers&#39;,
+                &#39;fields&#39;: {&#39;adresse&#39;: &#39;48 vis-à-vis RUE DE LISBONNE&#39;,
+                           &#39;alim&#39;: &#39;SOLAIRE&#39;,
+                           &#39;arrondt&#39;: 8,
+                           &#39;geo_point_2d&#39;: [48.877489999731374,
+                                            2.311394999713242],
+                           &#39;geo_shape&#39;: {&#39;coordinates&#39;: [2.311394999713242,
+                                                         48.877489999731374],
+                                         &#39;type&#39;: &#39;Point&#39;},
+                           &#39;modele&#39;: &#39;SAB3&#39;,
+                           &#39;numhoro&#39;: 57080603,
+                           &#39;objectid&#39;: 4383,
+                           &#39;regime&#39;: &#39;MIX&#39;,
+                           &#39;tarif&#39;: &#39;4,00 E MIX 2U&#39;,
+                           &#39;tarifhor&#39;: 4.0,
+                           &#39;zoneres&#39;: &#39;8J&#39;},
+                &#39;geometry&#39;: {&#39;coordinates&#39;: [2.311394999713242,
+                                             48.877489999731374],
+                             &#39;type&#39;: &#39;Point&#39;},
+                &#39;record_timestamp&#39;: &#39;2015-12-02T17:49:46+00:00&#39;,
+                &#39;recordid&#39;: &#39;698c75a21ba4f4c34e72f32ea1ecd94f9de8b88c&#39;}],
+  &#39;montant carte&#39;: 2.4,
+  &#39;moyen de paiement&#39;: &#39;CB&#39;,
+  &#39;usager&#39;: &#39;Rotatif&#39;},
+ {&#39;_id&#39;: ObjectId(&#39;56eaaa8f9fae0d71f79740f9&#39;),
+  &#39;date horodateur&#39;: datetime.datetime(2014, 10, 1, 20, 28, 57),
+  &#39;durée payée (h)&#39;: 10.0,
+  &#39;début stationnement&#39;: datetime.datetime(2014, 10, 1, 20, 28, 57),
+  &#39;fin stationnement&#39;: datetime.datetime(2014, 10, 2, 19, 0),
+  &#39;horodateur&#39;: 57080603,
+  &#39;mobilier&#39;: [{&#39;_id&#39;: ObjectId(&#39;56eaa4552d7eb34e4432e0fb&#39;),
+                &#39;datasetid&#39;: &#39;horodateurs-mobiliers&#39;,
+                &#39;fields&#39;: {&#39;adresse&#39;: &#39;48 vis-à-vis RUE DE LISBONNE&#39;,
+                           &#39;alim&#39;: &#39;SOLAIRE&#39;,
+                           &#39;arrondt&#39;: 8,
+                           &#39;geo_point_2d&#39;: [48.877489999731374,
+                                            2.311394999713242],
+                           &#39;geo_shape&#39;: {&#39;coordinates&#39;: [2.311394999713242,
+                                                         48.877489999731374],
+                                         &#39;type&#39;: &#39;Point&#39;},
+                           &#39;modele&#39;: &#39;SAB3&#39;,
+                           &#39;numhoro&#39;: 57080603,
+                           &#39;objectid&#39;: 4383,
+                           &#39;regime&#39;: &#39;MIX&#39;,
+                           &#39;tarif&#39;: &#39;4,00 E MIX 2U&#39;,
+                           &#39;tarifhor&#39;: 4.0,
+                           &#39;zoneres&#39;: &#39;8J&#39;},
+                &#39;geometry&#39;: {&#39;coordinates&#39;: [2.311394999713242,
+                                             48.877489999731374],
+                             &#39;type&#39;: &#39;Point&#39;},
+                &#39;record_timestamp&#39;: &#39;2015-12-02T17:49:46+00:00&#39;,
+                &#39;recordid&#39;: &#39;698c75a21ba4f4c34e72f32ea1ecd94f9de8b88c&#39;}],
+  &#39;montant carte&#39;: 0.65,
+  &#39;moyen de paiement&#39;: &#39;Paris Carte&#39;,
+  &#39;usager&#39;: &#39;Résident&#39;},
+ {&#39;_id&#39;: ObjectId(&#39;56eaa8989fae0d71f7b31129&#39;),
+  &#39;date horodateur&#39;: datetime.datetime(2014, 2, 14, 17, 25, 53),
+  &#39;durée payée (h)&#39;: 0.75,
+  &#39;début stationnement&#39;: datetime.datetime(2014, 2, 14, 17, 25, 53),
+  &#39;fin stationnement&#39;: datetime.datetime(2014, 2, 14, 18, 10, 53),
+  &#39;horodateur&#39;: 57080603,
+  &#39;mobilier&#39;: [{&#39;_id&#39;: ObjectId(&#39;56eaa4552d7eb34e4432e0fb&#39;),
+                &#39;datasetid&#39;: &#39;horodateurs-mobiliers&#39;,
+                &#39;fields&#39;: {&#39;adresse&#39;: &#39;48 vis-à-vis RUE DE LISBONNE&#39;,
+                           &#39;alim&#39;: &#39;SOLAIRE&#39;,
+                           &#39;arrondt&#39;: 8,
+                           &#39;geo_point_2d&#39;: [48.877489999731374,
+                                            2.311394999713242],
+                           &#39;geo_shape&#39;: {&#39;coordinates&#39;: [2.311394999713242,
+                                                         48.877489999731374],
+                                         &#39;type&#39;: &#39;Point&#39;},
+                           &#39;modele&#39;: &#39;SAB3&#39;,
+                           &#39;numhoro&#39;: 57080603,
+                           &#39;objectid&#39;: 4383,
+                           &#39;regime&#39;: &#39;MIX&#39;,
+                           &#39;tarif&#39;: &#39;4,00 E MIX 2U&#39;,
+                           &#39;tarifhor&#39;: 4.0,
+                           &#39;zoneres&#39;: &#39;8J&#39;},
+                &#39;geometry&#39;: {&#39;coordinates&#39;: [2.311394999713242,
+                                             48.877489999731374],
+                             &#39;type&#39;: &#39;Point&#39;},
+                &#39;record_timestamp&#39;: &#39;2015-12-02T17:49:46+00:00&#39;,
+                &#39;recordid&#39;: &#39;698c75a21ba4f4c34e72f32ea1ecd94f9de8b88c&#39;}],
+  &#39;montant carte&#39;: 1.8,
+  &#39;moyen de paiement&#39;: &#39;Paris Carte&#39;,
+  &#39;usager&#39;: &#39;Rotatif&#39;},
+ {&#39;_id&#39;: ObjectId(&#39;56eaaa039fae0d71f7589f71&#39;),
+  &#39;date horodateur&#39;: datetime.datetime(2014, 7, 15, 12, 32, 34),
+  &#39;durée payée (h)&#39;: 1.0,
+  &#39;début stationnement&#39;: datetime.datetime(2014, 7, 15, 12, 32, 34),
+  &#39;fin stationnement&#39;: datetime.datetime(2014, 7, 15, 13, 32, 34),
+  &#39;horodateur&#39;: 57080603,
+  &#39;mobilier&#39;: [{&#39;_id&#39;: ObjectId(&#39;56eaa4552d7eb34e4432e0fb&#39;),
+                &#39;datasetid&#39;: &#39;horodateurs-mobiliers&#39;,
+                &#39;fields&#39;: {&#39;adresse&#39;: &#39;48 vis-à-vis RUE DE LISBONNE&#39;,
+                           &#39;alim&#39;: &#39;SOLAIRE&#39;,
+                           &#39;arrondt&#39;: 8,
+                           &#39;geo_point_2d&#39;: [48.877489999731374,
+                                            2.311394999713242],
+                           &#39;geo_shape&#39;: {&#39;coordinates&#39;: [2.311394999713242,
+                                                         48.877489999731374],
+                                         &#39;type&#39;: &#39;Point&#39;},
+                           &#39;modele&#39;: &#39;SAB3&#39;,
+                           &#39;numhoro&#39;: 57080603,
+                           &#39;objectid&#39;: 4383,
+                           &#39;regime&#39;: &#39;MIX&#39;,
+                           &#39;tarif&#39;: &#39;4,00 E MIX 2U&#39;,
+                           &#39;tarifhor&#39;: 4.0,
+                           &#39;zoneres&#39;: &#39;8J&#39;},
+                &#39;geometry&#39;: {&#39;coordinates&#39;: [2.311394999713242,
+                                             48.877489999731374],
+                             &#39;type&#39;: &#39;Point&#39;},
+                &#39;record_timestamp&#39;: &#39;2015-12-02T17:49:46+00:00&#39;,
+                &#39;recordid&#39;: &#39;698c75a21ba4f4c34e72f32ea1ecd94f9de8b88c&#39;}],
+  &#39;montant carte&#39;: 2.4,
+  &#39;moyen de paiement&#39;: &#39;CB&#39;,
+  &#39;usager&#39;: &#39;Rotatif&#39;}]
+</pre>
 </div>
-</div>
-
 </div>
 
 </div>
@@ -12387,1016 +12436,13 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="8.-Pour-chaque-grade-possible,-donner-le-score-moyen,-minimum-et-maximum.">8. Pour chaque <em>grade</em> possible, donner le <em>score</em> moyen, minimum et maximum.<a class="anchor-link" href="#8.-Pour-chaque-grade-possible,-donner-le-score-moyen,-minimum-et-maximum.">&#182;</a></h3><p>Il faut d'abord dégrouper les évaluations pour chaque restaurant grâce à <code>$unwind</code>. Ensuite, c'est un calcul assez simple à réaliser.</p>
+<h3 id="A-faire">A faire<a class="anchor-link" href="#A-faire">&#182;</a></h3><ol>
+<li>Calculer le nombre de transactions par arrondissement</li>
+<li>Calculer la répartition du type d'alimentation par arrondissement</li>
+</ol>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span>
-    <span class="p">{</span> <span class="s2">&quot;$unwind&quot;</span> <span class="p">:</span> <span class="s2">&quot;$grades&quot;</span><span class="p">},</span>
-    <span class="p">{</span> <span class="s2">&quot;$group&quot;</span> <span class="p">:</span> <span class="p">{</span> 
-        <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;$grades.grade&quot;</span><span class="p">,</span> 
-        <span class="s2">&quot;nb&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;$sum&quot;</span> <span class="p">:</span> <span class="mi">1</span> <span class="p">},</span>
-        <span class="s2">&quot;moy&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;$avg&quot;</span> <span class="p">:</span> <span class="s2">&quot;$grades.score&quot;</span> <span class="p">},</span>
-        <span class="s2">&quot;min&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;$min&quot;</span> <span class="p">:</span> <span class="s2">&quot;$grades.score&quot;</span> <span class="p">},</span>
-        <span class="s2">&quot;max&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;$max&quot;</span> <span class="p">:</span> <span class="s2">&quot;$grades.score&quot;</span> <span class="p">}</span>
-    <span class="p">}</span> <span class="p">}</span>
-<span class="p">])</span>
-<span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">),</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">,</span> <span class="s2">&quot;nb&quot;</span><span class="p">,</span> <span class="s2">&quot;moy&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;Grade&quot;</span><span class="p">,</span> <span class="s2">&quot;nb&quot;</span><span class="p">:</span> <span class="s2">&quot;Nb restaurants&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;moy&quot;</span><span class="p">:</span> <span class="s2">&quot;Score moyen&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="s2">&quot;Score  minimum&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="s2">&quot;Score maximum&quot;</span>
-<span class="p">})</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[20]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Grade</th>
-      <th>Nb restaurants</th>
-      <th>Score moyen</th>
-      <th>Score  minimum</th>
-      <th>Score maximum</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>P</td>
-      <td>1197</td>
-      <td>5.51</td>
-      <td>0</td>
-      <td>43</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>A</td>
-      <td>74656</td>
-      <td>9.02</td>
-      <td>0</td>
-      <td>27</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Not Yet Graded</td>
-      <td>525</td>
-      <td>15.85</td>
-      <td>0</td>
-      <td>75</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>B</td>
-      <td>12603</td>
-      <td>20.00</td>
-      <td>-1</td>
-      <td>57</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Z</td>
-      <td>1337</td>
-      <td>23.70</td>
-      <td>-1</td>
-      <td>71</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>C</td>
-      <td>3145</td>
-      <td>30.70</td>
-      <td>-1</td>
-      <td>131</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="9.-Cr&#233;er-un-DataFrame-contenant-les-restaurants-en-ligne-et-en-colonne-le-score-moyen-obtenu-pour-chaque-grade-possible.-Si-un-restaurant-n'a-pas-eu-d'&#233;valuation-d'un-grade,-nous-aurons-une-valeur-absente.">9. Cr&#233;er un <code>DataFrame</code> contenant les restaurants en ligne et en colonne le score moyen obtenu pour chaque <em>grade</em> possible. Si un restaurant n'a pas eu d'&#233;valuation d'un <em>grade</em>, nous aurons une valeur absente.<a class="anchor-link" href="#9.-Cr&#233;er-un-DataFrame-contenant-les-restaurants-en-ligne-et-en-colonne-le-score-moyen-obtenu-pour-chaque-grade-possible.-Si-un-restaurant-n'a-pas-eu-d'&#233;valuation-d'un-grade,-nous-aurons-une-valeur-absente.">&#182;</a></h3><p>Si nous regardons le nombre de restaurants par nom de ceux-ci, nous remarquons qu'il y a des restaurants avec le même nom (des chaînes comme <em>Starbucks</em> ou <em>Subway</em> par exemple).</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span>
-    <span class="p">{</span> <span class="s2">&quot;$group&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;nb&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;$sum&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">}</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="s2">&quot;$sort&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;nb&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span> <span class="p">}</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span> <span class="p">}</span>
-<span class="p">])</span>
-<span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[26]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>_id</th>
-      <th>nb</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Subway</td>
-      <td>421</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Starbucks Coffee</td>
-      <td>223</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Mcdonald'S</td>
-      <td>208</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Dunkin' Donuts</td>
-      <td>206</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Dunkin Donuts</td>
-      <td>200</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td></td>
-      <td>151</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Kennedy Fried Chicken</td>
-      <td>88</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Crown Fried Chicken</td>
-      <td>81</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>Burger King</td>
-      <td>80</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>Domino'S Pizza</td>
-      <td>67</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Nous allons donc faire un regroupement par identifiant de restaurant (<code>restaurant_id</code>) et par <code>grade</code>, pour calculer le score moyen. Nous voyons ici les premiers résultats de l'aggrégation.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[46]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span>
-    <span class="p">{</span> <span class="s2">&quot;$unwind&quot;</span><span class="p">:</span> <span class="s2">&quot;$grades&quot;</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="s2">&quot;$group&quot;</span><span class="p">:</span> <span class="p">{</span> 
-        <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;$restaurant_id&quot;</span><span class="p">,</span> <span class="s2">&quot;grade&quot;</span><span class="p">:</span> <span class="s2">&quot;$grades.grade&quot;</span> <span class="p">},</span>
-        <span class="s2">&quot;m&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;$avg&quot;</span><span class="p">:</span> <span class="s2">&quot;$grades.score&quot;</span> <span class="p">}</span>
-    <span class="p">}}</span>
-<span class="p">])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Ensuite, on créé un <code>DataFrame</code> à partir du résultat, en récupérant les sous-variables <em>à la main</em>. Ce qui nous donne à la fin le <code>DataFrame</code> suivant.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[47]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
-<span class="n">df</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">id</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">_id</span><span class="p">]</span>
-<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Grade&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">id</span><span class="p">[</span><span class="s2">&quot;grade&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">_id</span><span class="p">]</span>
-<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[47]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>_id</th>
-      <th>m</th>
-      <th>ID</th>
-      <th>Grade</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>{'grade': 'Not Yet Graded', 'id': '50018704'}</td>
-      <td>34.0</td>
-      <td>50018704</td>
-      <td>Not Yet Graded</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>{'grade': 'A', 'id': '50018608'}</td>
-      <td>12.0</td>
-      <td>50018608</td>
-      <td>A</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>{'grade': 'Not Yet Graded', 'id': '50018587'}</td>
-      <td>2.0</td>
-      <td>50018587</td>
-      <td>Not Yet Graded</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>{'grade': 'A', 'id': '50018581'}</td>
-      <td>5.0</td>
-      <td>50018581</td>
-      <td>A</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>{'grade': 'Not Yet Graded', 'id': '50018572'}</td>
-      <td>8.0</td>
-      <td>50018572</td>
-      <td>Not Yet Graded</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Il faut maintenant transformer ce <code>DataFrame</code> en utilisant la fonction <code>pivot_table()</code> du module <code>pandas</code>. Cette fonction prend quatre paramètres :</p>
-<ul>
-<li><code>df</code> : le <code>DataFrame</code> sur lequel faire le pivot</li>
-<li><code>index</code> : identifiant de chaque ligne (ici, l'identifiant des restaurants)</li>
-<li><code>columns</code> : noms des colonnes (ici, chaque grade) </li>
-<li><code>value</code> : valeurs des cellules (ici, score moyen pour un restaurant pour un grade)</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[48]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfbis</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;Grade&#39;</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
-<span class="n">dfbis</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[48]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>Grade</th>
-      <th>A</th>
-      <th>B</th>
-      <th>C</th>
-      <th>Not Yet Graded</th>
-      <th>P</th>
-      <th>Z</th>
-    </tr>
-    <tr>
-      <th>ID</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>30075445</th>
-      <td>6.8</td>
-      <td>14.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>30112340</th>
-      <td>10.7</td>
-      <td>23.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>30191841</th>
-      <td>9.2</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>40356018</th>
-      <td>9.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>40356068</th>
-      <td>13.0</td>
-      <td>25.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>20.0</td>
-    </tr>
-    <tr>
-      <th>40356151</th>
-      <td>10.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>38.0</td>
-    </tr>
-    <tr>
-      <th>40356442</th>
-      <td>10.5</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>40356483</th>
-      <td>10.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>40356649</th>
-      <td>9.6</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>40356731</th>
-      <td>8.2</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Au final, nous regardons les informations de notre <code>DataFrame</code> ainsi créé. Nous remarquons que la plupart ont eu un grade <code>A</code>, et plusieurs n'ont pas encore été évalué.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[49]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfbis</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[49]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>(24621, 6)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[50]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfbis</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[50]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>Grade
-A                 23440
-B                  8280
-C                  2708
-Not Yet Graded      512
-P                  1154
-Z                  1337
-dtype: int64</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Nous récupérons ici les informations des restaurants (nom - <code>name</code> - et quartier - <code>borough</code>) pour les ajouter à notre table précédente. Ici, nous récupérons juste les informations que l'on souhaite.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">infos</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">find</span><span class="p">({},</span> <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;restaurant_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;borough&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">})</span>
-<span class="n">infos_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">infos</span><span class="p">))</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;restaurant_id&quot;</span><span class="p">:</span> <span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Nom&quot;</span><span class="p">,</span> <span class="s2">&quot;borough&quot;</span><span class="p">:</span> <span class="s2">&quot;Quartier&quot;</span> <span class="p">})</span>
-<span class="n">infos_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[53]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Quartier</th>
-      <th>Nom</th>
-      <th>ID</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Bronx</td>
-      <td>Morris Park Bake Shop</td>
-      <td>30075445</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Brooklyn</td>
-      <td>Wendy'S</td>
-      <td>30112340</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Manhattan</td>
-      <td>Dj Reynolds Pub And Restaurant</td>
-      <td>30191841</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Brooklyn</td>
-      <td>Riviera Caterer</td>
-      <td>40356018</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Queens</td>
-      <td>Tov Kosher Kitchen</td>
-      <td>40356068</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Pour réaliser une jointure, nous avons la fonction <code>join()</code> qui réalise une jointure sur les <code>index</code> des lignes par défaut. La fonction <code>set_index()</code> permet de définir cet <code>index</code> de lignes pour les informations des restaurants, avant de faire la jointure.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">final</span> <span class="o">=</span> <span class="n">dfbis</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">infos_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">))</span>
-<span class="n">final</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[54]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>A</th>
-      <th>B</th>
-      <th>C</th>
-      <th>Not Yet Graded</th>
-      <th>P</th>
-      <th>Z</th>
-      <th>Quartier</th>
-      <th>Nom</th>
-    </tr>
-    <tr>
-      <th>ID</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>30075445</th>
-      <td>6.750000</td>
-      <td>14.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>Bronx</td>
-      <td>Morris Park Bake Shop</td>
-    </tr>
-    <tr>
-      <th>30112340</th>
-      <td>10.666667</td>
-      <td>23.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>Brooklyn</td>
-      <td>Wendy'S</td>
-    </tr>
-    <tr>
-      <th>30191841</th>
-      <td>9.250000</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>Manhattan</td>
-      <td>Dj Reynolds Pub And Restaurant</td>
-    </tr>
-    <tr>
-      <th>40356018</th>
-      <td>9.000000</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>Brooklyn</td>
-      <td>Riviera Caterer</td>
-    </tr>
-    <tr>
-      <th>40356068</th>
-      <td>13.000000</td>
-      <td>25.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>20.0</td>
-      <td>Queens</td>
-      <td>Tov Kosher Kitchen</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Avec un <code>DataFrame</code> ainsi créé, il est maintenant possible, par exemple, de calculer les scores moyens de chaque grade, pour chaque quartier (ici, dans <code>python</code>).</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">final</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Quartier&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">res</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[57]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>A</th>
-      <th>B</th>
-      <th>C</th>
-      <th>Not Yet Graded</th>
-      <th>P</th>
-      <th>Z</th>
-    </tr>
-    <tr>
-      <th>Quartier</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Bronx</th>
-      <td>8.84</td>
-      <td>19.79</td>
-      <td>28.90</td>
-      <td>14.05</td>
-      <td>5.67</td>
-      <td>22.38</td>
-    </tr>
-    <tr>
-      <th>Brooklyn</th>
-      <td>8.94</td>
-      <td>19.87</td>
-      <td>28.73</td>
-      <td>16.41</td>
-      <td>5.35</td>
-      <td>23.45</td>
-    </tr>
-    <tr>
-      <th>Manhattan</th>
-      <td>8.94</td>
-      <td>19.85</td>
-      <td>31.18</td>
-      <td>17.84</td>
-      <td>5.68</td>
-      <td>24.49</td>
-    </tr>
-    <tr>
-      <th>Missing</th>
-      <td>8.41</td>
-      <td>22.00</td>
-      <td>43.50</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>Queens</th>
-      <td>9.12</td>
-      <td>19.88</td>
-      <td>31.12</td>
-      <td>14.22</td>
-      <td>5.28</td>
-      <td>23.51</td>
-    </tr>
-    <tr>
-      <th>Staten Island</th>
-      <td>9.33</td>
-      <td>19.37</td>
-      <td>32.82</td>
-      <td>12.85</td>
-      <td>6.68</td>
-      <td>19.77</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
     </div>
   </div>
