@@ -3,22 +3,23 @@ title: Visualisation de données avec **R**
 author: DU Dataviz
 output:
     html_document:
+        code_folding: hide
         toc: true
         toc_float: true
         toc_depth: 4
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.align = "center", warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(fig.align = "center", 
+                      warning = FALSE, 
+                      message = FALSE)
 ```
 
 Dans ce document est présenté un certain nombre de commandes concernant des packages **R** utiles pour la visualisation de données. Voici comment les charger :
 
 ```{r librairies}
-library(RColorBrewer)
-library(ggplot2)
+library(tidyverse)
 library(scales)
-library(reshape2)
 library(leaflet)
 library(ggmap)
 library(geojsonio)
@@ -27,101 +28,16 @@ library(maps)
 
 Le but de la visualisation de données étant de représenter graphiquement des données brutes (ou quasi-brutes), il est souvent nécessaire de prendre en compte plusieurs variables. Nous devons donc aller plus loin que les graphiques de base (nuage de points, ligne, boîte à moustache, diagramme en barres ou circulaires, ...), pour les combiner par exemple.
 
-## Avec `r-base` (package `graphics`)
+Avec le langage de base (package `graphics` notemment), il est possible de faire des graphiques évolués, mais avec beaucoup de paramètrages *à la main*.
 
-Ce package permet de créer plusieurs graphiques simplement. Il est nécessaire de les modifier ensuite pour avoir un résultat esthétique.
+Voici ici un exemple de graphique avancé, représentant 4 variables (trois quantitatives et une qualitative), ainsi qu'une explication succinte des différentes fonctions utilisées, et quelques paramètres de celles-ci.
 
-### Multiples graphiques
-
-Si on veut avoir, par exemple, toutes les informations utiles pour une variable quantitative, il est nécessaire d'avoir a minima un histogramme et une boîte à moustache, mais on peut aussi vouloir un $qq$-plot. Ceci permet d'introduire les commandes `par(mfrow=)` (ou `mfcol`) et  `layout()`.
-
-#### `mfrow` et `mfcol`
-
-Le paramètre `mfrow` de la fonction `par()` permet de définir un découpage (`mf` pour *multi-frame* et `row` car on va remplir ligne par ligne). Le paramètre `mfcol` fait de même en remplissant colonne par colonne.
-
-Ces paramètres `mfrow` et `mfcol` prend donc deux valeurs :
-
-- le nombre de lignes
-- le nombre de colonnes
-
-##### `mfrow`
-
-Voici par exemple un découpage en 2 lignes et 3 colonnes, et l'ordre de remplissage des graphiques.
-
-```{r ex-mfrow}
-par(mfrow = c(2, 3))
-for (i in 1:6) {
-    plot.new()
-    rect(0, 0, 1, 1)
-    text(.5, .5, i, cex = 2)
-}
-```
-
-##### `mfcol`
-
-Le même découpage, mais avec le paramètre `mfcol`, ce qui modifie l'ordre de remplissage des zones graphiques.
-
-```{r ex-mfcol}
-par(mfcol = c(2, 3))
-for (i in 1:6) {
-    plot.new()
-    rect(0, 0, 1, 1)
-    text(.5, .5, i, cex = 2)
-}
-```
-
-
-#### `layout()`
-
-Les découpages précédents ne permettent qu'un découpage en grille. Si on veut avoir un découpage plus fin (une grande zone en haut et deux petites en bas, par exemple), il existe la commande `layout()`. Celle-ci prend en paramètre une matrice indiquant les numéros des graphiques, et leur placement.
-
-En reprenant l'exemple (une grande zone en haut et deux petites en bas), il nous faut définir cette matrice :
-
-```{r ex-layout-matrice}
-mat = matrix(c(1, 2, 1, 3), 2, 2)
-print(mat)
-```
-
-Pour l'utiliser, il suffit de faire comme ceci :
-
-```{r ex-layout}
-layout(mat)
-for (i in 1:3) {
-    plot.new()
-    rect(0, 0, 1, 1)
-    text(.5, .5, i, cex = 2)
-}
-```
-
-##### Exemple d'utilisation de `layout`
-
-Nous allons utiliser `layout` pour représenter une variable quantitative (`co2` ici, déjà présente dans R), avec les quatre représentations suivantes :
-
-1. Histogramme (avec la fonction `hist()`)
-2. Evolution sur le temps (avec `plot()` - `co2` étant une série temporelle, `ts` sous R)
-3. Boîte à moustache (avec `boxplot()`)
-4. $qq$-plot (avec `qqline()`et `qqnorm()`)
-
-```{r ex-layout-bis}
-mat = matrix(c(4, 3, 3, 1, 2, 2, 1, 2, 2), 3, 3)
-print(mat)
-layout(mat)
-par(mar = c(2, 2, 2, 0)+.1)
-hist(co2, main = "co2")
-plot(co2)
-boxplot(co2, axes = FALSE)
-qqnorm(co2, main = "");qqline(co2)
-```
-
-
-### Amélioration de graphique
-
-Voici ici un exemple de graphique personnalisé, représentant 4 variables (trois quantitatives et une qualitative), ainsi qu'une explication succinte des différentes fonctions utilisées, et quelques paramètres de celles-ci.
-
-```{r ex-amelioration}
+```{r ex-graph}
+library(RColorBrewer)
 par(family = "serif", mar = c(5, 4, 2, 0)+.1)
 couleurs_am = brewer.pal(3, "Dark2")
-plot(mpg ~ hp, data = mtcars,
+plot(mpg ~ hp, 
+     data = mtcars,
      pch = 19,
      cex = wt/3,
      col = couleurs_am[mtcars$am+1],
@@ -179,7 +95,7 @@ text(outliers_mpg$hp, outliers_mpg$mpg, row.names(outliers_mpg), pos = 4, cex = 
     - `pt.cex` : taille des symboles
     - `adj`: ajustement du texte
     
-## Avec la librairie `ggplot2`
+## Librairie `ggplot2`
 
 Ce package reproduit la grammaire des graphiques (cf [*Grammar of Graphics*, Leland Wilkinson](http://www.springer.com/us/book/9780387245447)), avec le même formalisme. Vous pouvez trouver plus d'informations sur le [site officiel](http://had.co.nz/ggplot2/) et la [documentation](http://docs.ggplot2.org/current/). Finalement, cet [article](http://www.tandfonline.com/doi/abs/10.1198/jcgs.2009.07098) permet de bien comprendre la philosophie du package et de la grammaire.
 
@@ -234,7 +150,126 @@ La fonction `ggplot()` permet de faire plus de choses que `qplot()` mais nécess
 - `facet_grid()` découpe les données (et donc le graphique) en plusieurs facettes selon les variables fournie dans la formule
 - `theme_xxx()`, `labs()`, `xlab()`, `ylab()`, `ggtitle()`, ... pour des améliorations du graphique (annotation, couleurs, ...)
 
-Hormis la fonction `aes()`, qui s'utilise à l'intérieur des autres, toutes ces fonctions peuvent s'additionner pour compléter le graphique. Voici un exemple de suite de commandes pour produire un graphique :
+Hormis la fonction `aes()`, qui s'utilise à l'intérieur des autres, toutes ces fonctions peuvent s'additionner pour compléter le graphique.
+
+Le fonctionnement de la fonction `ggplot()` est donc particulier, mais une fois compris, il est facile de créer chaque graphique statistique que l'on souhaite. 
+
+#### Fonctionnement général
+
+Par exemple, pour décrire une variable continue par un histogramme, nous pouvons utiliser le code suivant (nous utilisons les données `diamonds` du package `ggplot2`) :
+
+```{r ggplot1-hist}
+ggplot(data = diamonds, aes(x = carat)) +
+    geom_histogram()
+```
+
+Le premier paramètre de la fonction `ggplot()` est donc le dataframe sur lequel faire le graphique (ici `diamonds`). La fonction `aes()` permet de définir les aspects esthétiques (ici la variable `carat`). 
+
+#### Stockage dans une variable
+
+Un des gros intérêt de la fonction `ggplot()` est le stockage du résultat dans une variable. Pour l'afficher, on peut soit appeler la variable, soit utiliser la fonction `print()` explicitement (voir ci-dessous). 
+
+```{r ggplot2-var}
+g = ggplot(data = diamonds, aes(x = carat)) +
+    geom_histogram()
+g # ou print(g)
+```
+
+L'intérêt sera de pouvoir créer des graphiques et les stocker dans un fichier `RData`, pour les afficher plus tard.
+
+#### Personnalisation du graphique
+
+##### Thème général
+
+On peut améliorer le graphique de différentes manières. Tout d'abord, il existe différents thèmes généraux (cf `?theme_grey` - ou un autre - pour voir la liste). Voici le thème `classic` et le thème `light`:
+
+```{r ggplot3-theme}
+g + theme_classic()
+g + theme_light()
+```
+
+
+##### Labels
+
+```{r ggplot4-labels}
+g + labs(x = "label en x", y = "label en y")
+```
+
+##### Plus d'options
+
+Avec la fonction `theme()` (pas d'exemple ici car complexe).
+
+#### Aspect en fonction d'une variable
+
+```{r}
+ggplot(diamonds, aes(x = "")) + 
+    geom_bar()
+```
+
+Couleur dans un diagramme en barres empilées
+
+```{r}
+ggplot(diamonds, aes(x = "", fill = cut)) + 
+    geom_bar()
+```
+
+
+Modification graphique -> barres empilées jusqu'à circulaire
+
+#### Variable spécifique ..xxx...
+
+```{r}
+ggplot(diamonds, aes(x = "", fill = cut)) + 
+    geom_bar(aes(y = (..count..)/sum(..count..)))
+```
+
+#### Changement d'échelle 
+
+```{r ggplot-quali-stack}
+ggplot(diamonds, aes(x = "", fill = cut)) + 
+    geom_bar(aes(y = (..count..)/sum(..count..))) +
+    scale_y_continuous(labels = percent)
+```
+
+
+#### Changement de système de coordonnées
+
+```{r}
+ggplot(diamonds, aes(x = "", fill = cut)) + 
+    geom_bar(aes(y = (..count..)/sum(..count..)), width = 1) +
+    scale_y_continuous(labels = percent) +
+    coord_polar(theta = "y")
+```
+
+
+#### Superposition de graphique (geom_point, geom_smooth)
+
+
+
+#### Effet du placement de data et aes()
+
+
+
+
+
+
+
+```{r}
+ggplot(diamonds, aes(carat)) +
+    geom_bar()
+```
+
+
+
+
+
+
+
+
+
+
+
+Voici un exemple de suite de commandes pour produire un graphique :
 
 ```{r ggplot-ex}
 # Récupération des moyennes et des écarts-type de Sepal.Length pour chaque espèce
@@ -388,110 +423,34 @@ ggplot(mtcars, aes(factor(am), mpg)) +
     geom_jitter()
 ```
 
-#### Exemple amélioré version `ggplot`
+#### Exemple version `ggplot`
+
+bla bla à écrire sur l'exemple 
 
 ```{r ggplot-amelioration}
-nom = rownames(mtcars)
-nom[mtcars$hp <= 250 & mtcars$mpg <= 30] = ""
-ggplot(mtcars, aes(x = hp, y = mpg, 
-                   color = factor(am, labels = c("Automatique", "Manuelle")), 
-                   size = wt, 
-                   label = nom)) + 
-    geom_point() + 
-    geom_text(size = 3, color = "black", vjust = -.75, fontface = "bold") +
-    ggtitle("Consommation et autres") +
-    xlab("Puissance (en ch)") + xlim(25, 350) +
-    ylab("Consommation en Miles/Galon") +
-    labs(color = "Transmission", size = "Poids (1000 lbs)") 
+ggplot(mtcars %>% rownames_to_column(), 
+       aes(x = hp, y = mpg, 
+           color = factor(am, labels = c("Automatique", "Manuelle")), 
+           size = wt, 
+           label = ifelse(hp <= 250 & mpg <=30, "", rowname))) + 
+  geom_point() + 
+  geom_text(size = 3, color = "black",
+            vjust = -.75, fontface = "bold",
+            hjust="inward") +
+  ggtitle("Consommation et autres") +
+  labs(x = "Puissance (en ch)", 
+       y = "Consommation en Miles/Galon",
+       color = "Transmission", 
+       size = "Poids (1000 lbs)") +
+  theme_classic()
 ```
 
 
-### Quelques exemples complémentaires
-
-Ce sont des exemples plus ou moins simple de créations de graphiques.
-
-#### Données Iris
-
-On cherche à représenter les boîtes à moustaches des 4 variables pour les trois espèces.
-
-##### Avec `plot`
-
-```{r iris-boxplot}
-par(mfrow = c(2, 2), mar = c(2, 2, 2, 0) + .1)
-for (i in 1:4) {
-    boxplot(iris[,i] ~ iris$Species, main = names(iris)[i])
-}
-```
-
-##### Avec `ggplot`
-
-```{r iris-boxplot-ggplot}
-ggplot(melt(iris, id.vars = "Species"), aes(Species, value)) + 
-    geom_boxplot() + facet_grid( ~ variable)
-```
-
-#### Données d'ancombe
-
-```{r anscombe-data}
-DT::datatable(anscombe, options = list(searching = F, ordering = F, paging = F))
-```
-
-```{r anscombe-plot}
-par(mfrow = c(2, 2), mar = c(2, 2, 0, 0)+.1)
-f <- function(df) {
-    names(df) = c("x", "y")
-    m = lm(y ~ x, data = df)
-    plot(y ~ x, data = df, pch = 19, bty = "n", 
-         xlim = range(anscombe[,1:4]),
-         ylim = range(anscombe[,5:8]))
-    abline(m, col = "red")
-}
-for (i in 1:4) {
-    f(anscombe[,paste(c("x", "y"), i, sep = "")])
-}
-```
-
-```{r anscombe-ggplot}
-ans = transform(
-    cbind(
-        melt(subset(anscombe, select = c(x1, x2, x3, x4)), 
-             variable.name = "coordx", value.name = "x"),
-        melt(subset(anscombe, select = c(y1, y2, y3, y4)), 
-             variable.name = "coordy", value.name = "y")
-    ),
-    num = substr(coordx, 2, 2)
-)
-ggplot(ans, aes(x, y)) + geom_point() + 
-    facet_wrap(~ num) + 
-    geom_smooth(method = "lm", se = FALSE, fullrange = T)
-```
 
 ### Applications
 
-Nous allons utiliser les données `tips` du package `reshape2`.
+A revoir ici
 
-1. Comment répondre aux questions suivantes :
-   a. Les pourboires (`tip`) dépendent ils du montant (`total_bill`)
-   b. Et des jours de la semaine (`day`) ?
-   c. Et du nombre de convives (`party`) ?
-   d. Croiser `tip` en fonction de `total_bill` et `party`
-1. Représenter `total_bill` en fonction de `sex` et `smoker`.
-<!--
-ggplot(tips, aes(sex, smoker, z = total_bill)) + 
-    stat_summary_2d() 
--->
-1. Toujours dans `tips`, représenter `total_bill` et `tip`, en fonction de `sex` de 2 façons
-<!--
-ggplot(tips, aes(total_bill, tip, color = sex)) + geom_point()
-ggplot(tips, aes(total_bill, tip)) + geom_point() + facet_grid(. ~ sex)
-ggplot(tips, aes(total_bill, tip)) + geom_bin2d() + facet_grid(. ~ sex)
--->
-1. Idem avec `smoker` en plus
-<!--
-ggplot(tips, aes(total_bill, tip, color = sex)) + geom_point() + facet_grid(. ~ smoker)
-ggplot(tips, aes(total_bill, tip)) + geom_point() + facet_grid(smoker ~ sex)
-ggplot(tips, aes(total_bill, tip)) + geom_bin2d() + facet_grid(smoker ~ sex)
--->
 
 ## Cartographie
 
@@ -598,7 +557,7 @@ En utilisant les données `crime` du package `ggmap`, comment représenter le no
 
 ### Introduction 
 
-Nous disposons de [données d'AirBnB](https://www.dropbox.com/sh/s7kiuot44g5lxi5/AACVVQzJJh2ivGDH5ikisroua?dl=0) pour Paris à la date du 2 septembre 2015 ( [données source](http://insideairbnb.com/get-the-data.html) ). Celles-ci ont été légèremment nettoyées et réduites pour obtenir les fichiers suivants :
+Nous disposons de données d'AirBnB pour Paris à la date du 2 septembre 2015 ( [données source](http://insideairbnb.com/get-the-data.html) ). Celles-ci ont été légèremment nettoyées et réduites pour obtenir les fichiers suivants :
 
 | Fichier | Contenu |
 |:-|:-|
