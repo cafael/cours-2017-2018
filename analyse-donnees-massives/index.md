@@ -25,3 +25,4 @@ title: Analyse de Données Massives
 1. [TP9 - Données du projet](analyse-donnees-massives-tp9.html)
     - [correction](analyse-donnees-massives-tp9-correction.html)
 1. [Sujet du projet](analyse-donnees-massives-tp10.html)
+    - [aide](analyse-donnees-massives-tp10-aide.html)
