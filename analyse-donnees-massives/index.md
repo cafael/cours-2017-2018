@@ -23,4 +23,5 @@ title: Analyse de Données Massives
 1. [TP8 - Cartographie sous `python`](analyse-donnees-massives-tp8.html)
     - [correction](analyse-donnees-massives-tp8-correction.html)
 1. [TP9 - Données du projet](analyse-donnees-massives-tp9.html)
+    - [correction](analyse-donnees-massives-tp9-correction.html)
 1. [Sujet du projet](analyse-donnees-massives-tp10.html)
