@@ -100,25 +100,7 @@ Ce package reproduit la grammaire des graphiques (cf [*Grammar of Graphics*, Lel
 
 Le principe de cette grammaire est qu'un graphique est composé de couches :
 
-- les **données** à représenter, à partir desquelles nous définissons des attributs **estéthiques** (soit identique pour tous, soit fonction d'une des variables) :
-    - les axes $x$ et $y$,
-    - la couleur
-    - la taille
-    - le symbole
-- les attributs **géométriques** (point, ligne, ...)
-- les transformations **statistiques** (dénombrement, ajustement, ...)
-- les **échelles**
-- le système de **coordonnées** (linéaire, logarithmique, polaire, ...)
-- le découpage (ou non) en **facettes**
-
-Dans cette librairie, il y a deux fonctions principales :
-
-- `qplot` (ou `quickplot`) permettant de faire des graphiques rapidement
-- `ggplot` permettant d'initialiser un graphique auquel on va ajouter des couches successivement
-
-Le principe de cette grammaire est qu'un graphique est composé de couches :
-
-- les **données** à représenter, à partir desquelles nous définissons des attributs **estéthiques** (soit identique pour tous, soit fonction d'une des variables) :
+- les **données** à représenter, à partir desquelles nous définissons des attributs **esthétiques** (soit identique pour tous, soit fonction d'une des variables) :
     - les axes $x$ et $y$,
     - la couleur
     - la taille
@@ -146,7 +128,7 @@ La fonction `ggplot()` permet de faire plus de choses que `qplot()` mais nécess
 - `stat_xxx()` indique les transformations statistiques à utiliser, si besoin
 - `scale_xxx()` s'emploie pour des changements d'échelle
 - `coord_xxx()` s'utilise pour des modifications de systèmes de coordonnées
-- `facet_grid()` découpe les données (et donc le graphique) en plusieurs facettes selon les variables fournie dans la formule
+- `facet_xxx()` découpe les données (et donc le graphique) en plusieurs facettes selon les variables fournie dans la formule
 - `theme_xxx()`, `labs()`, `xlab()`, `ylab()`, `ggtitle()`, ... pour des améliorations du graphique (annotation, couleurs, ...)
 
 Hormis la fonction `aes()`, qui s'utilise à l'intérieur des autres, toutes ces fonctions peuvent s'additionner pour compléter le graphique.
@@ -278,7 +260,7 @@ ggplot(diamonds, aes(x = carat, y = price)) +
 
 #### Faceting
 
-Pour comparer des données, il est très intéressant de faire des graphiques de type [*small multiples*](). L'idée est de faire un même graphique, mais pour chaque modalité d'une variable. Pour faire cela facilement avec `ggplot2`, nous disposons de deux fonctions : `facet_wrap()` et `facet_grid()`.
+Pour comparer des données, il est très intéressant de faire des graphiques de type [*small multiples*](http://www.juiceanalytics.com/writing/better-know-visualization-small-multiples). L'idée est de faire un même graphique, mais pour chaque modalité d'une variable. Pour faire cela facilement avec `ggplot2`, nous disposons de deux fonctions : `facet_wrap()` et `facet_grid()`.
 
 ##### avec `facet_wrap()`
 
@@ -298,7 +280,7 @@ ggplot(diamonds, aes(carat, price)) +
     facet_wrap(facets = ~cut, ncol = 2)
 ```
 
-##### avec `grid`
+##### avec `facet_grid()`
 
 Mais il est utile de forcer soit une répartition sur une même ligne de ces différents graphiques, ou sur une même colonne. Dans ce cas, nous utilisons la fonction `facet_grid()`, qui permet de déterminer explicitement comment on veut répartir les différentes facettes.
 
@@ -541,10 +523,12 @@ On commence déjà par importer ces données dans R.
 ```{r airbnb-data}
 airbnb.summ = read.table("http://fxjollois.github.io/donnees/airBnB-2015-09-02/airbnb-paris-2015-09-02-summary.csv", 
                          sep = ",", header = T, 
-                         quote = "\"", comment.char = "")
+                         quote = "\"", comment.char = "",
+                         encoding = "UTF-8")
 airbnb.comp = read.table("http://fxjollois.github.io/donnees/airBnB-2015-09-02/airbnb-paris-2015-09-02.csv", 
                          sep = ",", header = T, 
-                         quote = "\"", comment.char = "")
+                         quote = "\"", comment.char = "",
+                         encoding = "UTF-8")
 ```
 
 Sur ces données, il est déjà possible de représenter chaque logement par un point, assez simplement
@@ -561,15 +545,16 @@ On importe donc les données des arrondissements. La fonction `fortify()` de `gg
 airbnb.neigh = geojson_read("http://fxjollois.github.io/donnees/airBnB-2015-09-02/airbnb-paris-2015-09-02-neighbourhoods.geojson", what = "sp")
 airbnb.neigh.for = fortify(airbnb.neigh)
 ggplot(airbnb.neigh.for, aes(long, lat, group=group)) +
-    geom_polygon()  + theme_void()
+    geom_polygon(color = "white")  + theme_void()
 ```
 
 Le problème dans notre cas est que les quartiers ne sont pas classés dans un ordre spécifique dans les données, et que l'objet `airbnb.neigh` ne comporte plus le nom du quartier, ce qui va nous empêcher de faire le lien avec les autres données. Le code suivant permet donc de récupérer l'ordre des quartiers et de le stocker dans un `data.frame`. On lit différemment le jeu de données.
 
 ```{r airbnb-order}
+df = geojson_read("http://fxjollois.github.io/donnees/airBnB-2015-09-02/airbnb-paris-2015-09-02-neighbourhoods.geojson")
 airbnb.neigh.ord = data.frame(
     id = as.character(0:19),
-    neighbourhood = unlist(lapply(geojson_read("http://fxjollois.github.io/donnees/airBnB-2015-09-02/airbnb-paris-2015-09-02-neighbourhoods.geojson")$features, function(f) return(f$properties$neighbourhood)))
+    neighbourhood = sapply(df$features, function(f) return(f$properties$neighbourhood))
 )
 airbnb.neigh.ord
 ```
@@ -577,10 +562,13 @@ airbnb.neigh.ord
 Il peut être intéressant de calculer le centre de chaque quartier, pour pouvoir l'ajouter sur la carte par la suite. Pour cela, nous prenons la moyenne entre la latitude (et resp. la longitude) minimale et maximale.
 
 ```{r airbnb-center}
-airbnb.neigh.cen = merge(airbnb.neigh.ord, 
-                         aggregate(cbind(long, lat) ~ id, airbnb.neigh.for,
-                                   function (c) return(mean(range(c))))
-                         )
+airbnb.neigh.cen = airbnb.neigh.for %>% 
+  group_by(id) %>% 
+  summarise(
+    long = mean(range(long, na.rm = T)),
+    lat = mean(range(lat, na.rm = T))
+  ) %>%
+  inner_join(airbnb.neigh.ord)
 ggplot(airbnb.neigh.for, aes(long, lat, group=group)) +
     geom_polygon(fill = "gray70", color = "gray50") +
     geom_text(data = airbnb.neigh.cen, aes(label = neighbourhood, group=id)) + theme_void()
@@ -591,7 +579,7 @@ Au final, on peut faire une carte des arrondissements, en y ajoutant le nom du v
 ```{r airbnb-tout}
 ggplot(airbnb.neigh.for) +
     geom_polygon(aes(long, lat, group=group, fill=id), color="gray50") +
-    geom_point(data=airbnb.summ, aes(longitude, latitude), col="gray30", alpha=.5) +
+    geom_point(data=airbnb.summ, aes(longitude, latitude), col="gray30", alpha=.25) +
     geom_text(data=airbnb.neigh.cen, aes(long, lat, label=neighbourhood, group=id)) + 
     theme_void() + theme(legend.position="none")
 ```
