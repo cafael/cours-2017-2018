@@ -133,9 +133,7 @@ Dans l'exemple ci-dessous, on utilise ce principe pour créer autant de `div` qu
 
 Il existe plusieurs fonctions dans la librairie D3 pour charger des données de tout type (`JSON`, `CSV`, `TSV`, `XML`, ...). Les fonctions pour le faire sont toutes de type `d3.xxx()` (`xxx` étant remplacé par le format approprié - `d3.json()` pour du `JSON` par exemple).
 
-L'exemple ci-dessous charge des données obtenues via l'API [**Open Movie Database** (OMDb)](http://www.omdbapi.com/), qui permet d'accéder à une grande base de données de films. Nous avons choisi de faire une recherche sur les termes *Big*, *Bang* et *Theory*. On doit donc charger la page obtenue grâce à l'URL suivante :
-
-> [`http://www.omdbapi.com/?s=big+bang+theory`](http://www.omdbapi.com/?s=big+bang+theory)
+L'exemple ci-dessous charge les données contenues dans le fichier [`mpg.csv`](https://fxjollois.github.io/donnees/mpg.csv) (qui recense un ensemble de voitures, avec plusieurs caractéristiques).
 
 <p data-height="372" data-theme-id="0" data-slug-hash="PNxVoY" data-default-tab="js,result" data-user="fxjollois" data-embed-version="2" class="codepen">See the Pen <a href="http://codepen.io/fxjollois/pen/PNxVoY/">d3.js : lecture de données JSON</a> by FX Jollois (<a href="http://codepen.io/fxjollois">@fxjollois</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
@@ -178,9 +176,9 @@ Vous pouvez trouver dans les liens qui suivent un certain nombre d'informations 
 - [REcommandation W3C traduite](http://www.yoyodesign.org/doc/w3c/svg1/)
 - [Section SVG sur Mozilla](https://developer.mozilla.org/fr/docs/Web/SVG)
 
-Dans l'exemple ci-dessous, nous créons un graphique de largeur 200 pixels et de hauteur 100 pixels. Une fois créé, on ajoute une transformation (via la balise `g` ajoutée). Celle-ci est une translation de 10 pixels en $x$ et de 10 pixels en $y$. C'est le résultat de la translation qui est renvoyé, ce qui veut dire que tout ce qu'on ajoute intégrera donc cette première translation.
+Dans l'exemple ci-dessous, nous créons un graphique de largeur 200 pixels et de hauteur 100 pixels. Une fois créé, on ajoute une transformation (via la balise `g` ajoutée). Celle-ci est une translation de 10 pixels en *x* et de 10 pixels en *y*. C'est le résultat de la translation qui est renvoyé, ce qui veut dire que tout ce qu'on ajoute intégrera donc cette première translation.
 
-On ajoute ensuite un rectangle dont le point haut gauche est situé en $(0,0)$. Notez donc que le point origine est donc situé **en haut à gauche** sur un écran. Ce rectangle est un carré de 50 pixels, rempli en rouge. On ajoute finalement un texte.
+On ajoute ensuite un rectangle dont le point haut gauche est situé en *(0,0)*. Notez donc que le point origine est donc situé **en haut à gauche** sur un écran. Ce rectangle est un carré de 50 pixels, rempli en rouge. On ajoute finalement un texte.
 
 <p data-height="325" data-theme-id="0" data-slug-hash="EKGPXZ" data-default-tab="js,result" data-user="fxjollois" data-embed-version="2" class="codepen">See the Pen <a href="http://codepen.io/fxjollois/pen/EKGPXZ/">d3.js : création de SVG</a> by FX Jollois (<a href="http://codepen.io/fxjollois">@fxjollois</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
@@ -188,7 +186,7 @@ On ajoute ensuite un rectangle dont le point haut gauche est situé en $(0,0)$. 
 
 ## Echelles
 
-Dans un graphique, nous devons faire un passage d'échelle entre les données et la zone graphique. Par exemple, si l'on doit afficher des valeurs entre -1000 et 1000 sur l'axe $x$, il nous faut une fonction pour les transformer dans l'intervalle $[0,largeur]$ (où $largeur$ représente la largeur du graphique `SVG` produit).
+Dans un graphique, nous devons faire un passage d'échelle entre les données et la zone graphique. Par exemple, si l'on doit afficher des valeurs entre -1000 et 1000 sur l'axe *x*, il nous faut une fonction pour les transformer dans l'intervalle *[0,largeur]* (où *largeur* représente la largeur du graphique `SVG` produit).
 
 Les fonctions dans D3 pour réaliser cela ont toutes comme nom `d3.scale.xxx()`, où `xxx` est à remplacer par le type de changement d'échelle qu'on souhaite. Il faut notre que ces fonctions renvoient elle-même une fonction de changement d'échelle. Il faut de plus déterminer deux éléments importants :
 
@@ -203,8 +201,8 @@ L'exemple proposé ci-dessus est typiquement un problème de changement d'échel
 
 ```js
 var echelle = d3.scale.linear()
-					.domain([-1000, 1000])
-					.range([0, 100]);
+        .domain([-1000, 1000])
+        .range([0, 100]);
 console.log(echelle(-1000)) // renvoie 0
 console.log(echelle(0))     // renvoie 50
 console.log(echelle(1000))  // renvoie 100
@@ -216,8 +214,8 @@ L'intérêt de ces échelles réside aussi dans la possibilité de passer de val
 
 ```js
 var echelle = d3.scale.linear()
-					.domain([-1000, 1000])
-					.range(["red", "green"]);
+        .domain([-1000, 1000])
+        .range(["red", "green"]);
 console.log(echelle(-1000)) // renvoie "#ff0000"
 console.log(echelle(0))     // renvoie "#804000"
 console.log(echelle(1000))  // renvoie "#008000"
@@ -227,12 +225,12 @@ console.log(echelle(1000))  // renvoie "#008000"
 
 #### Vers du numérique
 
-Un autre changement d'échelle classique est le passage d'un ensemble de modalités à une plage de valeurs. Pour cela, on utilise la fonction `d3.scale.ordinal()`. Ici, nous définissons l'étendu par bandes (`"A"` sera sur la bande ainsi $[0, 33.33...]$)
+Un autre changement d'échelle classique est le passage d'un ensemble de modalités à une plage de valeurs. Pour cela, on utilise la fonction `d3.scale.ordinal()`. Ici, nous définissons l'étendu par bandes (`"A"` sera sur la bande ainsi *[0, 33.33...]*)
 
 ```js
 var echelle = d3.scale.ordinal()
-					.domain(["A", "B", "Z"])
-					.rangeBands([0, 100]);
+        .domain(["A", "B", "Z"])
+        .rangeBands([0, 100]);
 console.log(echelle("A")) // renvoie 0
 console.log(echelle("B")) // renvoie 33.3333...3
 console.log(echelle("Z")) // renvoie 66.6666...7
@@ -244,7 +242,7 @@ Dans ce cas aussi, on peut affecter une couleur à chaque modalité, toujours en
 
 ```js
 var echelle = d3.scale.category10()
-					.domain(["A", "B", "Z"]);
+    .domain(["A", "B", "Z"]);
 console.log(echelle("A")) // renvoie "#1f77b4"
 console.log(echelle("B")) // renvoie "#ff7f0e"
 console.log(echelle("Z")) // renvoie "#2ca02c"
@@ -271,7 +269,7 @@ Dans l'exemple ci-dessous, nous utilisons l'ensemble des éléments vu ci-dessou
 
 Le code est commenté pour expliquer ce que chaque partie permet de réaliser dans le graphique.
 
-<iframe style="width: 100%; height: 600px" src="http://embed.plnkr.co/dAITTEWo4EJmYZnQjGVv" frameborder="0"></iframe>
+<iframe style="width: 100%; height: 600px" src="https://embed.plnkr.co/dAITTEWo4EJmYZnQjGVv" frameborder="0"></iframe>
 
 ## A réaliser 
 
