@@ -1,16 +1,16 @@
 ---
 layout: default
-title: Visualisation de données - D3.js
+title: Visualisation de données - d3.js
 subtitle: Data-Driven Documents
 ---
 
-[D3.js](http://www.d3js.org) est une librairie `javascript` très complète avec beaucoup d'exemples à disposition, avec une personnalisation totale possible. Elle permet l'accès à des primitives `SVG` permettant toute innovation. Malheureusement, elle est peu accessible directement et assez technique.
+[d3.js](http://www.d3js.org) est une librairie `javascript` très complète avec beaucoup d'exemples à disposition, avec une personnalisation totale possible. Elle permet l'accès à des primitives `SVG` permettant toute innovation. Malheureusement, elle est peu accessible directement et assez technique.
 
 Les exemples présentés ci-dessous sont disponibles directement [sur cette page](http://codepen.io/collection/DojQMG/).
 
 ## Fonctionnement typique
 
-L'edée principale est de lier les données au **DOM** (*Document Object Model*), et d'appliquer des transformations, basées sur les données, au document.
+L'edée principale est de lier les **données** au **DOM** (*Document Object Model*), et d'appliquer des transformations, basées sur les données, au document.
 
 Il y a plusieurs concepts spécifiques à bien comprendre pour l'utiliser pleinement :
 
@@ -138,7 +138,7 @@ L'exemple ci-dessous charge les données contenues dans le fichier [`mpg.csv`](h
 <p data-height="372" data-theme-id="0" data-slug-hash="PNxVoY" data-default-tab="js,result" data-user="fxjollois" data-embed-version="2" class="codepen">See the Pen <a href="http://codepen.io/fxjollois/pen/PNxVoY/">d3.js : lecture de données JSON</a> by FX Jollois (<a href="http://codepen.io/fxjollois">@fxjollois</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
 
-## Ajout d'interactivé
+## Ajout d'interactivité
 
 Il est possible d'ajouter des gestions d'événements sur les objets créés via la fonction `on()`. Celle-ci prend en premier paramètre l'événement (par exemple `mouseover` pour gérer le positionnement de la souris sur l'objet), et en deuxième paramètre la fonction à appliquer lors de la survenue de cet évènement. 
 
@@ -200,7 +200,7 @@ Les fonctions dans D3 pour réaliser cela ont toutes comme nom `d3.scale.xxx()`,
 L'exemple proposé ci-dessus est typiquement un problème de changement d'échelle **linéaire**. Il existe pour cela la fonction `d3.scale.linear()`.
 
 ```js
-var echelle = d3.scale.linear()
+var echelle = d3.scaleLinear()
         .domain([-1000, 1000])
         .range([0, 100]);
 console.log(echelle(-1000)) // renvoie 0
@@ -213,7 +213,7 @@ console.log(echelle(1000))  // renvoie 100
 L'intérêt de ces échelles réside aussi dans la possibilité de passer de valeurs numériques à des couleurs par exemple. On doit juste définir dans l'étendu les couleurs de début et de fin (et éventuellement certaines intermédiaires).
 
 ```js
-var echelle = d3.scale.linear()
+var echelle = d3.scaleLinear()
         .domain([-1000, 1000])
         .range(["red", "green"]);
 console.log(echelle(-1000)) // renvoie "#ff0000"
@@ -225,23 +225,24 @@ console.log(echelle(1000))  // renvoie "#008000"
 
 #### Vers du numérique
 
-Un autre changement d'échelle classique est le passage d'un ensemble de modalités à une plage de valeurs. Pour cela, on utilise la fonction `d3.scale.ordinal()`. Ici, nous définissons l'étendu par bandes (`"A"` sera sur la bande ainsi *[0, 33.33...]*)
+Un autre changement d'échelle classique est le passage d'un ensemble de modalités à une plage de valeurs. Pour cela, on utilise la fonction `d3.scaleBand()`. Ici, nous définissons l'étendu par bandes (`"A"` sera sur la bande ainsi *[0, 33.33...]*)
 
 ```js
-var echelle = d3.scale.ordinal()
+var echelle = d3.scaleBand()
         .domain(["A", "B", "Z"])
-        .rangeBands([0, 100]);
+        .range([0, 90]);
 console.log(echelle("A")) // renvoie 0
-console.log(echelle("B")) // renvoie 33.3333...3
-console.log(echelle("Z")) // renvoie 66.6666...7
+console.log(echelle("B")) // renvoie 30
+console.log(echelle("Z")) // renvoie 60
+console.log(echelle.bandwidth()) // renvoie 30
 ```
 
 #### Vers des couleurs
 
-Dans ce cas aussi, on peut affecter une couleur à chaque modalité, toujours en définissant des couleurs dans l'étendu. Il existe de plus des fonctions spécifiques pour cela dans d3, comme `d3.scale.category10()`, dans lesquelles il n'y a pas d'étendu à définir.
+Dans ce cas aussi, on peut affecter une couleur à chaque modalité, toujours en définissant des couleurs dans l'étendu. Il existe de plus des fonctions spécifiques pour cela dans d3, comme `d3.scaleOrdinal()`, dans lesquelles il n'y a pas d'étendu à définir.
 
 ```js
-var echelle = d3.scale.category10()
+var echelle = d3.scaleOrdinal(d3["schemeSet1"])
     .domain(["A", "B", "Z"]);
 console.log(echelle("A")) // renvoie "#1f77b4"
 console.log(echelle("B")) // renvoie "#ff7f0e"
@@ -277,10 +278,12 @@ Le code est commenté pour expliquer ce que chaque partie permet de réaliser da
 
 Réaliser la courbe d'évolution des anomalies de température, par rapport à la période de référence 1961-1990 (donc de l'indice *HadCRUT4* - cf lien ci-dessous). Les données sont disponibles sur une grille mondiale, mais nous allons prendre ici la médiane globale de ces anomalies.
 
-- Courbe sur la période 1850-2016, avec les médianes annuelles
+- Courbe sur la période 1850-..., avec les médianes annuelles
 	- Courbe de la période
 	- Ligne de référence à 0 à ajouter
-	- Intervalles de confiance à ajouter, en laissant le choix à l'utilisateur de l'intervalle à utiliser
+    - Période de référence à ajouter
+    - Indication de la position de la souris à ajouter
+	- (*bonu*) Intervalles de confiance à ajouter, en laissant le choix à l'utilisateur de l'intervalle à utiliser
 - *Heatmap* sur la même période, avec les médianes mensuelles
 	- une colonne par année
 	- une ligne par mois
@@ -290,5 +293,3 @@ Réaliser la courbe d'évolution des anomalies de température, par rapport à l
 
 - [Données](http://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/download.html) : disponibles sur le site du **Met Office** (institut météorologique anglais)
 - [Explications](http://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/series_format.html) : détail des colonnes présentes dans les fichiers
-- [Moyennes annuelles](http://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.4.0.0.annual_ns_avg.txt) : accès direct aux données annuelles (médiane sur le globe)
-- [Moyennes mensuelles](http://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/time_series/HadCRUT.4.4.0.0.monthly_ns_avg.txt) : accès direct aux données mensuelles (médiane sur le globe)
