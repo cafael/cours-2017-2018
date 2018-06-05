@@ -13,7 +13,7 @@ title: Enseignement
 - LP Santé
     - [R avancé](info-dec-sante/)
 - LP Data-Mining
-    - [Méthodes avancées](machine-learning/) (ou *Machine Learning*)
+    - [Méthodes avancées](intro-big-data/) : Introduction au Big Data
 - DU Analyste Big Data
     - [Introduction à R](du-abd-r/)
 - DU Dataviz

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset = "UTF-8">
+        <link rel = "stylesheet" type = "text/css" href = "../remarkjs-fxj2.css">
+		<link rel = "icon" href = "../favicon-graduation-cap.ico" type = "image/x-icon">
+	</head>
+	<body>
+		<textarea id="source">
+			<!--
+                Slideshow Markdown pas besoin car sourceUrl plus bas
+            -->
+		</textarea>
+		<script src="../remark.min.js"></script>
+		<script>
+			var slideshow = remark.create({
+				sourceUrl: 'intro-big-data.md',
+				//ratio: "16:9",
+				countIncrementalSlides: false,
+				slideNumberFormat: '%current% / %total%'
+			});
+		</script>
+	</body>
+</html>
