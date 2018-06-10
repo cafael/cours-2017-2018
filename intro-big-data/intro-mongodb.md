@@ -2,7 +2,7 @@
 title: Introduction à MongoDB
 ---
 
-Dans ce TP, nous allons aborder l'utilisation de MongoDB, via l'interrogation de données dans le `shell`. MongoDB utilise le langage `JavaScript`.
+Dans cette introduction, nous allons aborder l'utilisation de MongoDB, via l'interrogation de données dans le `shell`. MongoDB utilise le langage `JavaScript`.
 
 ## MongoDB
 
