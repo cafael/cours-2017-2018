@@ -13,5 +13,5 @@ utilisés dans des environnements **Big Data**.
 - [Introduction à MongoDB](intro-mongodb)
     - [Correction](intro-mongodb-correction)
     - [TP MongoDB](tp-mongodb)
-
+- [Connexion R et MongoDB](connexion-r-mongodb.html)
 

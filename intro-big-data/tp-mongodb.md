@@ -6,14 +6,14 @@ Vous devez rendre ce TP pour mardi 12 juin, à 18h, en l'envoyant par mail à
 
     francois - xavier . jollois [@] parisdescartes . fr
 
-Merci de mettre vos réponses dans le mail, avec le formalisme uivant :
+Merci de mettre vos réponses dans le mail, avec le formalisme suivant :
 
 ```js
 ## Question à laquelle vous répondez
 db.collection.fonction()
 ```
 
-## Trafic parisien
+## Horodateurs parisien
 
 Nous allons découvrir dans ce TP les [données utilisées](https://opendata.paris.fr/explore/dataset/horodateurs-transactions-de-paiement/) dans le projet à rendre, qui sont l'ensemble des **transactions sur les horodateurs** dans la ville de **Paris** sur l'année **2014**. Celles-ci proviennent du site [Open Data Paris](https://opendata.paris.fr/), répertoire des données ouvertes de la ville de Paris. Elles sont stockées sur le serveur MongoDB déjà utilisé, dans la base horodateurs.
 
