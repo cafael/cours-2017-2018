@@ -10,7 +10,7 @@ Merci de mettre vos réponses dans le mail, avec le formalisme suivant :
 
 ```js
 ## Question à laquelle vous répondez
-db.collection.fonction()
+code R
 ```
 
 ### Trafic parisien
